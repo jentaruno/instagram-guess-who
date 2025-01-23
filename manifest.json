@@ -1,0 +1,20 @@
+{
+   "action": {
+      "default_icon": {
+         "32": "icons/32.png",
+         "128": "icons/128.png",
+         "16": "icons/16.png",
+         "48": "icons/48.png"
+      },
+      "default_popup": "popup/popup.html"
+   },
+   "content_scripts": [ {
+      "js": [ "scripts/content.js" ],
+      "matches": [ "https://www.instagram.com/*" ]
+   } ],
+   "name": "Instagram Guess Who",
+   "description": "Play Guess Who with mutual followers as characters",
+   "manifest_version": 3,
+   "permissions": ["activeTab"],
+   "version": "1.2.0"
+}
