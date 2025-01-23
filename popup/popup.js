@@ -5,3 +5,6 @@ document.getElementById("scraping-btn").addEventListener("click", function () {
   });
 });
 
+document.getElementById("play-btn").addEventListener("click",function () {
+  chrome.tabs.create({ url: chrome.runtime.getURL("page/index.html") });
+});
