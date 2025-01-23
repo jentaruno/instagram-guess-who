@@ -1,13 +1,19 @@
-const username = "calvin__liang";
+chrome.runtime.onMessage.addListener((data) => {
+  if (data.msg === "get-mutuals") {
+    console.log("hi");
+    getMutuals("calvin__liang");
+  }
+});
 
-/**
- * Initialized like this so we can still run it from browsers, but also use typescript on a code editor for intellisense.
- */
-let mutuals = [{ username: "", full_name: "", id: "", profile_pic_url: "" }];
+// adapted from https://stackoverflow.com/a/74133719
+async function getMutuals(username) {
+  /**
+   * Initialized like this so we can still run it from browsers, but also use typescript on a code editor for intellisense.
+   */
+  let mutuals = [{ username: "", full_name: "", id: "", profile_pic_url: "" }];
 
-mutuals = [];
+  mutuals = [];
 
-(async () => {
   try {
     console.log(`Process started! Give it a couple of seconds`);
 
@@ -21,9 +27,6 @@ mutuals = [];
       .map((u) => u.user)
       .filter((u) => u.username === username)[0].pk;
 
-    let after = null;
-    let has_next = true;
-
     const mutualQueryRes = await fetch(
       `https://www.instagram.com/graphql/query/?query_hash=c76146de99bb02f6415203be841dd25a&variables=` +
         encodeURIComponent(
@@ -32,7 +35,7 @@ mutuals = [];
             include_reel: true,
             fetch_mutual: true,
             first: 50,
-            after: after,
+            after: null,
           })
         )
     );
@@ -56,4 +59,4 @@ mutuals = [];
   } catch (err) {
     console.log({ err });
   }
-})();
+}
