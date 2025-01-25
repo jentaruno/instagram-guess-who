@@ -1,15 +1,42 @@
-<div>
-    <h1>Instagram Guess Who</h1>
-    <div class="flex">
-        <div>
-            <h3>Create Room</h3>
-            <button>Create</button>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Instagram Guess Who?</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="main-div">
+      <div class="header-ex text-center">
+        <img src="../logo.png" class="margin-r6" alt="Instagram Guess Who" />
+        <span>
+          Instagram Guess Who?
+          <span class="opacity6 font-size13">(by kaisoapbox & jentaruno)</span>
+        </span>
+      </div>
+      <div class="center-box">
+        <span>Your friend's Instagram username</span>
+        <input
+          type="text"
+          id="ig_username"
+          name="IG Username"
+          required
+          size="20"
+        />
+        <div class="margin-b8px">
+          <button id="scraping-btn" class="btn text-center">Guess Who?</button>
+          <span
+            >Will open Instagram in a new tab, make sure you're already logged
+            in!</span
+          >
         </div>
-        <div>
-            <h3>Join Room</h3>
-            <label for="join-code">Join Code</label>
-            <input type="text" id="join-code"/>
-            <button>Join</button>
-        </div>
+      </div>
     </div>
-</div>
+    <script src="index.js"></script>
+  </body>
+</html>

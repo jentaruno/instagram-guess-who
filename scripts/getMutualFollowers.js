@@ -1,3 +1,15 @@
+// run when instagram page loads to communicate back to page that we're ready
+function runOnPageLoad() {
+  console.log("loaded");
+  chrome.runtime.sendMessage({ type: "ready" });
+}
+
+if (document.readyState !== "loading") {
+  runOnPageLoad();
+} else {
+  document.addEventListener("DOMContentLoaded", runOnPageLoad);
+}
+
 chrome.runtime.onMessage.addListener((data) => {
   if (data.msg === "get-mutuals") {
     console.log("hi");
@@ -99,10 +111,10 @@ async function getMutuals(username) {
     console.log(filteredMutuals);
 
     // send extension filtered mutuals from the page
-    chrome.runtime.sendMessage(filteredMutuals);
+    chrome.runtime.sendMessage({ type: "mutuals", mutuals: filteredMutuals });
 
     console.log("Done with getting mutuals!");
   } catch (err) {
-    console.log({ err });
+    chrome.runtime.sendMessage({ type: "error", error: err.stack });
   }
 }
