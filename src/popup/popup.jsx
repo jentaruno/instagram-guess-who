@@ -6,7 +6,7 @@ import openIndex from "../components/openIndex";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <h1>Instagram Guess Who</h1>
+    <h1 className={"text-green-400"}>Instagram Guess Who</h1>
     <Button onClick={openIndex} content="Launch" />
   </StrictMode>
 );
