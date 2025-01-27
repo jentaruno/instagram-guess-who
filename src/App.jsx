@@ -1,6 +1,7 @@
 import {useState} from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
 import {ProfileCard} from "./components/ProfileCard.jsx";
+import {ConnectionManager} from "./components/ConnectionManager.jsx";
 
 export default function App() {
   const [username, setUsername] = useState("");
@@ -49,6 +50,7 @@ export default function App() {
     <>
         {!isGaming
         ? <div className={"m-4 w-full flex flex-col gap-4 items-center justify-center"}>
+                <ConnectionManager/>
                 <h1>Instagram Guess Who</h1>
                 <div className={"flex gap-4 items-center"}>
                     <input

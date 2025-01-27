@@ -8,7 +8,7 @@
   },
   "content_scripts": [
     {
-      "js": ["src/scripts/getMutualFollowers.js"],
+      "js": ["src/scripts/getMutualFollowers.js", "src/scripts/socket.js"],
       "matches": ["https://www.instagram.com/*"]
     }
   ],
