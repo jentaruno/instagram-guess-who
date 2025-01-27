@@ -1,10 +1,10 @@
-// TODO: polyfill?
-/*global chrome */
+// polyfilled browser using webextension-polyfill
+/*global browser */
 
 // run when instagram page loads to communicate back to page that we're ready
 function runOnPageLoad() {
   console.log("loaded");
-  chrome.runtime.sendMessage({ type: "ready" });
+  browser.runtime.sendMessage({ type: "ready" });
 }
 
 if (document.readyState !== "loading") {
@@ -13,7 +13,7 @@ if (document.readyState !== "loading") {
   document.addEventListener("DOMContentLoaded", runOnPageLoad);
 }
 
-chrome.runtime.onMessage.addListener((data) => {
+browser.runtime.onMessage.addListener((data) => {
   if (data.msg === "get-mutuals") {
     console.log("hi");
     getMutuals(data.username);
@@ -114,10 +114,10 @@ async function getMutuals(username) {
     console.log(filteredMutuals);
 
     // send extension filtered mutuals from the page
-    chrome.runtime.sendMessage({ type: "mutuals", mutuals: filteredMutuals });
+    browser.runtime.sendMessage({ type: "mutuals", mutuals: filteredMutuals });
 
     console.log("Done with getting mutuals!");
   } catch (err) {
-    chrome.runtime.sendMessage({ type: "error", error: err.stack });
+    browser.runtime.sendMessage({ type: "error", error: err.stack });
   }
 }

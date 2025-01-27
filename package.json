@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp manifest.json dist/ && cp -r src/scripts/ dist/",
+    "build": "vite build && cp manifest.json dist/ && cp -r src/scripts/ dist/ && cp node_modules/webextension-polyfill/dist/browser-polyfill.min.js dist/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

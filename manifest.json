@@ -5,7 +5,7 @@
   },
   "content_scripts": [
     {
-      "js": ["getMutualFollowers.js"],
+      "js": ["browser-polyfill.min.js", "getMutualFollowers.js"],
       "matches": ["https://www.instagram.com/*"]
     }
   ],
