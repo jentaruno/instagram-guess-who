@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp manifest.json dist/ && cp -r src/scripts/ dist/",
-    "build-windows": "vite build && copy manifest.json dist\\ && xcopy src\\scripts dist\\ /E /H",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
