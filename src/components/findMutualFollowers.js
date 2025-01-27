@@ -1,16 +1,17 @@
-async function handleClick() {
-  const igUsername = document.getElementById("ig_username").value;
-  const tab = await chrome.tabs.create({
+import browser from "webextension-polyfill";
+
+export default async function handleClick(igUsername) {
+  const tab = await browser.tabs.create({
     url: "https://instagram.com",
     active: false,
   });
-  chrome.runtime.onMessage.addListener(function getMutuals(request, sender) {
+  browser.runtime.onMessage.addListener(function getMutuals(request, sender) {
     if (request.type !== "ready" || sender.tab.id !== tab.id) return;
     console.log("instagram tab ready");
     // once message is received, remove this listener
-    chrome.runtime.onMessage.removeListener(getMutuals);
+    browser.runtime.onMessage.removeListener(getMutuals);
     // add listener to process received mutuals
-    chrome.runtime.onMessage.addListener(function processMutuals(
+    browser.runtime.onMessage.addListener(function processMutuals(
       request,
       sender
     ) {
@@ -27,15 +28,13 @@ async function handleClick() {
         return;
       }
       // when mutuals/error received, remove listener and close ig tab
-      chrome.runtime.onMessage.removeListener(processMutuals);
-      chrome.tabs.remove(tab.id);
+      browser.runtime.onMessage.removeListener(processMutuals);
+      browser.tabs.remove(tab.id);
     });
     // send igUsername to get mutuals
-    chrome.tabs.sendMessage(sender.tab.id, {
+    browser.tabs.sendMessage(sender.tab.id, {
       msg: "get-mutuals",
       username: igUsername,
     });
   });
 }
-
-document.getElementById("scraping-btn").addEventListener("click", handleClick);

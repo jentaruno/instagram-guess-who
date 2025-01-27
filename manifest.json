@@ -1,11 +1,11 @@
 {
   "action": {
     "default_icon": "logo.png",
-    "default_popup": "popup/popup.html"
+    "default_popup": "src/popup/popup.html"
   },
   "content_scripts": [
     {
-      "js": ["scripts/getMutualFollowers.js"],
+      "js": ["getMutualFollowers.js"],
       "matches": ["https://www.instagram.com/*"]
     }
   ],

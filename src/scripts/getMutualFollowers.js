@@ -1,3 +1,6 @@
+// TODO: polyfill?
+/*global chrome */
+
 // run when instagram page loads to communicate back to page that we're ready
 function runOnPageLoad() {
   console.log("loaded");
@@ -67,8 +70,8 @@ async function getMutuals(username) {
       { username: "", full_name: "", id: "", profile_pic_url: "" },
     ];
     followings = [];
-    after = null;
-    has_next = true;
+    let after = null;
+    let has_next = true;
 
     while (has_next) {
       await fetch(
