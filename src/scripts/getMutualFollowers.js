@@ -1,5 +1,4 @@
-// polyfilled browser using webextension-polyfill
-/*global browser */
+import browser from "webextension-polyfill";
 
 // run when instagram page loads to communicate back to page that we're ready
 function runOnPageLoad() {
@@ -19,6 +18,18 @@ browser.runtime.onMessage.addListener((data) => {
     getMutuals(data.username);
   }
 });
+
+async function imageUrlToBase64(url) {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((onSuccess) => {
+    const reader = new FileReader();
+    reader.onload = function () {
+      onSuccess(this.result);
+    };
+    reader.readAsDataURL(blob);
+  });
+}
 
 // adapted from https://stackoverflow.com/a/74133719
 async function getMutuals(username) {
@@ -50,17 +61,19 @@ async function getMutuals(username) {
         )
     );
     const mutualFollowerQueryJson = await mutualFollowerQueryRes.json();
-    const mutualFollowers =
+    const mutualFollowers = await Promise.all(
       mutualFollowerQueryJson.data.user.edge_mutual_followed_by.edges.map(
-        ({ node }) => {
+        async ({ node }) => {
+          const pic = await imageUrlToBase64(node.profile_pic_url);
           return {
             username: node.username,
             full_name: node.full_name,
             id: node.id,
-            profile_pic_url: node.profile_pic_url,
+            profile_pic: pic,
           };
         }
-      );
+      )
+    );
 
     console.log(mutualFollowers);
 
