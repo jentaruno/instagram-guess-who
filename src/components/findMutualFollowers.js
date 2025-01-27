@@ -1,6 +1,6 @@
 import browser from "webextension-polyfill";
 
-export default async function handleClick(igUsername) {
+export default async function handleClick(igUsername, handleResponse) {
   const tab = await browser.tabs.create({
     url: "https://instagram.com",
     active: false,
@@ -20,6 +20,7 @@ export default async function handleClick(igUsername) {
       if (request.type === "mutuals") {
         // TODO: launch game with mutuals
         console.log(request.mutuals);
+        handleResponse(request.mutuals)
       } else if (request.type === "error") {
         // TODO: error handling
         console.log(request.error);

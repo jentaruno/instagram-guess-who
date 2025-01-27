@@ -1,7 +1,10 @@
 {
+  "background": {
+    "service_worker": "src/scripts/background.js",
+    "type": "module"
+  },
   "action": {
-    "default_icon": "logo.png",
-    "default_popup": "src/popup/popup.html"
+    "default_icon": "logo.png"
   },
   "content_scripts": [
     {
