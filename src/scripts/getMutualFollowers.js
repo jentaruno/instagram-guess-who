@@ -1,5 +1,4 @@
-// polyfilled browser using webextension-polyfill
-/*global browser */
+import browser from "webextension-polyfill";
 
 // run when instagram page loads to communicate back to page that we're ready
 function runOnPageLoad() {
