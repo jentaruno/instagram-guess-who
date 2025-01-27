@@ -9,16 +9,14 @@ export function ProfileCard(props) {
     >
         <img alt={props.profile.username} src={props.profile.profile_pic} className={"rounded-full mb-1"}/>
         <a
-            className={`underline ${props.profile.enabled
+            className={`hover:underline ${props.profile.enabled
                 ? "text-white hover:text-white"
                 : "text-black hover:text-black"}`}
             href={`https://instagram.com/${props.profile.username}`}
             target={"_blank"}
         >
-            {props.profile.username}
+            {props.profile.username} <br/>
+            {props.profile.full_name}
         </a>
-        <p className={`${props.profile.enabled
-            ? "text-white hover:text-white"
-            : "text-black hover:text-black"}`}>{props.profile.full_name}</p>
     </div>;
 }
