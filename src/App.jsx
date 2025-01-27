@@ -38,6 +38,13 @@ export default function App() {
         )
     }
 
+    function returnToMain() {
+        setIsGaming(false);
+        setUsername("");
+        setProfiles([]);
+        setIsLoading(false);
+    }
+
     return (
     <>
         {!isGaming
@@ -53,19 +60,29 @@ export default function App() {
                         disabled={isLoading}
                     />
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className={`${isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"} 
+                        border-none text-white font-bold py-2 px-4 rounded`}
                         onClick={handleClick}
                         disabled={isLoading}
                     >
-                        Launch
+                        {!isLoading ? "Launch" : "Loading..."}
                     </button>
-                    {isLoading && <p>Loading...</p>}
                 </div>
         </div>
         : <div className={"m-4 flex flex-col items-start"}>
             <div className={"mb-4 w-full flex flex-row justify-between items-center"}>
-                <h1>Instagram Guess Who</h1>
-                <button className={"bg-gray-200 hover:bg-gray-300 outline-none text-[1rem]"} onClick={() => resetAll()}>
+                <div className={"flex flex-row gap-4 items-center"}>
+                    <button className={"p-0 border-none"} onClick={returnToMain}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             className="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fillRule="evenodd"
+                                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                        </svg>
+                    </button>
+                    <h1 className={"mb-1"}>Instagram Guess Who</h1>
+                    <p className={"mb-1 ml-2 text-lg text-gray-400"}>Playing with {username}</p>
+                </div>
+                <button className={"bg-gray-200 hover:bg-gray-300 border-none text-[1rem]"} onClick={() => resetAll()}>
                     Reset All
                 </button>
             </div>
