@@ -4,24 +4,25 @@ import {ProfileCard} from "./components/ProfileCard.jsx";
 import {ConnectionManager} from "./components/ConnectionManager.jsx";
 
 export default function App() {
-  const [username, setUsername] = useState("");
-  const [profiles, setProfiles] = useState([]);
-  const [isGaming, setIsGaming] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+    //#region UI
+    const [username, setUsername] = useState("");
+    const [profiles, setProfiles] = useState([]);
+    const [isGaming, setIsGaming] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-  function handleClick() {
+    function handleClick() {
       setIsLoading(true);
       findMutualFollowers(username, handleResponse);
-  }
+    }
 
-  function handleResponse(data) {
+    function handleResponse(data) {
       let newProfiles = data
           .slice(0, 24)
           .map(e => { return {...e, enabled: true} });
       setProfiles(newProfiles);
       setIsLoading(false);
       setIsGaming(true);
-  }
+    }
 
     function toggleCard(index) {
         setProfiles((prevProfiles) =>
@@ -45,6 +46,7 @@ export default function App() {
         setProfiles([]);
         setIsLoading(false);
     }
+    //#endregion
 
     return (
     <>

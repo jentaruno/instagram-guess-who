@@ -1,20 +1,25 @@
-import React from 'react';
-import {socket} from "../scripts/socket.js";
+import React, {useState} from 'react';
+import browser from "webextension-polyfill";
 
 export function ConnectionManager() {
-    function connect() {
-        socket.connect();
-        socket.emit("peer-msg");
+    const [roomId, setRoomId] = useState("");
+    function joinRoom() {
+        browser.runtime.sendMessage({ event: "joinRoom", roomId })
     }
 
-    function disconnect() {
-        socket.disconnect();
+    function sendMessage() {
+        browser.runtime.sendMessage({ event: "play", text: "Hej!" });
     }
 
     return (
-        <>
-            <button onClick={ connect }>Connect</button>
-            <button onClick={ disconnect }>Disconnect</button>
-        </>
+        <div>
+            <div className={"flex flex-row"}>
+                <input type={"text"} onChange={(event) => {
+                    setRoomId(event.target.value);
+                }}/>
+                <button onClick={joinRoom}>Join</button>
+            </div>
+            <button onClick={sendMessage}>Send message</button>
+        </div>
     );
 }
