@@ -27,12 +27,13 @@ wss.on('connection', function (socket) {
         return socket.disconnect();
 
     if (keys.get(roomId) === undefined) {
+        console.log("Host opened room " + roomId);
         keys.set(roomId, key);
         socket.emit("host");
     }
 
     socket.join(roomId);
-    console.log("joined room " + roomId);
+    console.log("Joined room " + roomId);
 
     socket.on("error", console.error);
 
