@@ -6,37 +6,6 @@ browser.action.onClicked.addListener(() => {
   browser.tabs.create({ url: browser.runtime.getURL("index.html") });
 });
 
-//#region Connect and receive from sockets
-browser.runtime.onMessage.addListener((message) => {
-  if (message.event === "joinRoom")
-    connect(message.roomId);
-});
-
-let isHost = false;
-const URL = "ws://localhost:3030";
-let ws;
-
-function connect(roomId) {
-  browser.storage.local.set({ roomId });
-
-  ws = io(URL, {
-    forceNew: true,
-    transports: ["websocket"],
-    auth: { key },
-    query: { roomId },
-  });
-
-  ws.on("error", console.error);
-  ws.on("connect", () => console.log("Connected to server"));
-  ws.on("host", () => {
-    console.log("I am the host :D");
-    isHost = true;
-  });
-  ws.on("play", (text) =>
-      browser.runtime.sendMessage({ event: "play", text }));
-}
-//#endregion
-
 //#region Set connection key
 let key = "";
 
@@ -69,7 +38,38 @@ function randomString(length) {
 }
 //#endregion
 
-//#region Sending to socket
+//#region Connect and receive from socket
+browser.runtime.onMessage.addListener((message) => {
+  if (message.event === "joinRoom")
+    connect(message.roomId);
+});
+
+let isHost = false;
+const URL = "ws://localhost:3030";
+let ws;
+
+function connect(roomId) {
+  browser.storage.local.set({ roomId });
+
+  ws = io(URL, {
+    forceNew: true,
+    transports: ["websocket"],
+    auth: { key },
+    query: { roomId },
+  });
+
+  ws.on("error", console.error);
+  ws.on("connect", () => console.log("Connected to server"));
+  ws.on("host", () => {
+    console.log("I am the host :D");
+    isHost = true;
+  });
+  ws.on("play", (text) =>
+      browser.runtime.sendMessage({ event: "play", text }));
+}
+//#endregion
+
+//#region Send to socket
 browser.runtime.onMessage.addListener((message) => {
   if (!ws) return;
   if (message.event === "play") ws.emit("play", message.text);

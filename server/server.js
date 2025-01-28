@@ -42,17 +42,4 @@ wss.on('connection', function (socket) {
         if (keys.get(roomId) === key)
             socket.to(roomId).emit("play", ...data);
     });
-
-    socket.on('peer-msg', function (data) {
-        console.log('Message from peer: %s', data)
-        socket.broadcast.emit('peer-msg', data)
-    })
-
-    socket.on('go-private', function (data) {
-        socket.broadcast.emit('go-private', data)
-    })
-
-    socket.on("disconnect", () => {
-        if (keys.get(roomId) === key) keys.delete(roomId);
-    });
 })
