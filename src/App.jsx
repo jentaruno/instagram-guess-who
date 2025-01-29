@@ -1,16 +1,22 @@
 import { useState } from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
 import { ProfileCard } from "./components/ProfileCard.jsx";
+import { SelectionModal } from "./components/SelectionModal.jsx";
 
 export default function App() {
   const [username, setUsername] = useState("");
   const [profiles, setProfiles] = useState([]);
   const [isGaming, setIsGaming] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   function handleClick() {
     setIsLoading(true);
     findMutualFollowers(username, handleResponse);
+  }
+
+  function flipModal() {
+    setShowModal(!showModal);
   }
 
   function handleResponse(data) {
@@ -77,6 +83,7 @@ export default function App() {
                         border-none text-white font-bold py-2 px-4 rounded`}
               onClick={handleClick}
               disabled={isLoading}
+              type="submit"
             >
               {!isLoading ? "Launch" : "Loading..."}
             </button>
@@ -112,7 +119,7 @@ export default function App() {
               className={
                 "bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
               }
-              onClick={() => resetAll()}
+              onClick={flipModal}
             >
               Select Users
             </button>
@@ -132,6 +139,13 @@ export default function App() {
                 <ProfileCard profile={profile} onClick={() => toggleCard(i)} />
               ))}
           </div>
+          {showModal && (
+            <SelectionModal
+              profiles={profiles}
+              setProfiles={setProfiles}
+              flipModal={flipModal}
+            />
+          )}
         </div>
       )}
     </>
