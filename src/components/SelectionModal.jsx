@@ -1,5 +1,29 @@
 import { useState } from "react";
 
+function ProfileRow(props) {
+  return (
+    <div className="flex flex-row items-center">
+      <img
+        alt={props.profile.username}
+        src={props.profile.profile_pic}
+        className="rounded-full object-scale-down max-h-full mr-2"
+      />
+      <a
+        className={`hover:underline text-left ${
+          props.profile.enabled
+            ? "text-white hover:text-white"
+            : "text-black hover:text-black"
+        }`}
+        href={`https://instagram.com/${props.profile.username}`}
+        target={"_blank"}
+      >
+        {props.profile.username} <br />
+        {props.profile.full_name}
+      </a>
+    </div>
+  );
+}
+
 export function SelectionModal(props) {
   const [selections, setSelections] = useState(
     props.profiles.map((profile) => profile.selected)
@@ -57,11 +81,11 @@ export function SelectionModal(props) {
                   >
                     Select Friends
                   </h3>
-                  {selections.map((isSelected, index) => (
-                    // TODO render a mini profile card row nicely
-                    <div>
-                      <label>
-                        {props.profiles[index].username}
+                  <div className="flex flex-col gap-2">
+                    {selections.map((isSelected, index) => (
+                      // TODO render a mini profile card row nicely
+                      <label className="flex flex-row h-[50px] justify-between p-2 bg-blue-500 rounded-md">
+                        <ProfileRow profile={props.profiles[index]} />
                         <input
                           type="checkbox"
                           checked={isSelected}
@@ -70,15 +94,15 @@ export function SelectionModal(props) {
                           }}
                         />
                       </label>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <div className="bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 items-center justify-between">
               <button
                 type="submit"
-                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:bg-gray-500"
                 onClick={updateProfiles}
                 disabled={!valid}
               >
@@ -98,7 +122,9 @@ export function SelectionModal(props) {
               >
                 Cancel
               </button>
-              <p>{selections.filter(Boolean).length + "/24 selected"}</p>
+              <p className={valid ? "" : "text-red-500"}>
+                {selections.filter(Boolean).length + "/24 selected"}
+              </p>
             </div>
           </div>
         </div>
