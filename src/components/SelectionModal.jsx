@@ -1,19 +1,38 @@
+import { useState } from "react";
+
 export function SelectionModal(props) {
-  function toggleSelection(index, e) {
-    // do validation here and not update if its too long
-    console.log(e);
-    if (
-      !props.profiles[index].selected &&
-      props.profiles.filter((profile) => profile.selected).length >= 24
-    ) {
-      // do nothing
-      return;
-    }
+  const [selections, setSelections] = useState(
+    props.profiles.map((profile) => profile.selected)
+  );
+  const [valid, setValid] = useState(true);
+
+  // when Done, update profiles outside modal
+  function updateProfiles() {
     props.setProfiles((prevProfiles) =>
-      prevProfiles.map((profile, i) =>
-        i === index ? { ...profile, selected: !profile.selected } : profile
-      )
+      prevProfiles.map((profile, i) => ({
+        ...profile,
+        enabled: true,
+        selected: selections[i],
+      }))
     );
+    props.flipModal();
+  }
+
+  // reset selections to default
+  function resetSelections() {
+    setSelections((prevSelections) =>
+      prevSelections.map((_, index) => index < 24)
+    );
+  }
+
+  function toggleSelection(index) {
+    const newSelections = selections.map((selected, i) =>
+      i === index ? !selected : selected
+    );
+    setSelections(newSelections);
+    // disable Done button if the new length is over 24
+    const newValid = newSelections.filter(Boolean).length <= 24;
+    setValid(newValid);
   }
   return (
     <div
@@ -38,16 +57,16 @@ export function SelectionModal(props) {
                   >
                     Select Friends
                   </h3>
-                  {props.profiles.map((profile, index) => (
+                  {selections.map((isSelected, index) => (
                     // TODO render a mini profile card row nicely
                     <div>
                       <label>
-                        {profile.username}
+                        {props.profiles[index].username}
                         <input
                           type="checkbox"
-                          checked={profile.selected}
-                          onChange={(e) => {
-                            toggleSelection(index, e);
+                          checked={isSelected}
+                          onChange={() => {
+                            toggleSelection(index);
                           }}
                         />
                       </label>
@@ -56,20 +75,30 @@ export function SelectionModal(props) {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <div className="bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                type="button"
+                type="submit"
                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                onClick={props.flipModal}
+                onClick={updateProfiles}
+                disabled={!valid}
               >
                 Done
               </button>
               <button
                 type="reset"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={resetSelections}
               >
                 Reset
               </button>
+              <button
+                type="button"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                onClick={props.flipModal}
+              >
+                Cancel
+              </button>
+              <p>{selections.filter(Boolean).length + "/24 selected"}</p>
             </div>
           </div>
         </div>
