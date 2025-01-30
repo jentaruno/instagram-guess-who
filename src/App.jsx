@@ -9,14 +9,21 @@ export default function App() {
   const [isGaming, setIsGaming] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState("");
 
   function handleClick() {
+    setError("");
     setIsLoading(true);
-    findMutualFollowers(username, handleResponse);
+    findMutualFollowers(username, handleResponse, handleError);
   }
 
   function flipModal() {
     setShowModal(!showModal);
+  }
+
+  function handleError(data) {
+    setIsLoading(false);
+    setError(data);
   }
 
   function handleResponse(data) {
@@ -25,6 +32,7 @@ export default function App() {
         return { ...e, selected: i < 24, enabled: true };
       })
     );
+    setError("");
     setIsLoading(false);
     setIsGaming(true);
   }
@@ -88,6 +96,7 @@ export default function App() {
               {!isLoading ? "Launch" : "Loading..."}
             </button>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
       ) : (
         <div className={"m-4 flex flex-col items-start"}>
@@ -127,7 +136,7 @@ export default function App() {
               className={
                 "bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
               }
-              onClick={() => resetAll()}
+              onClick={resetAll}
             >
               Reset All
             </button>

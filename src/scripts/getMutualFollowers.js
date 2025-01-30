@@ -1,5 +1,7 @@
 import browser from "webextension-polyfill";
 
+const errorName = "IgError";
+
 // run when instagram page loads to communicate back to page that we're ready
 function runOnPageLoad() {
   console.log("loaded");
@@ -42,10 +44,26 @@ async function getMutuals(username) {
 
     const userQueryJson = await userQueryRes.json();
 
-    const userId = userQueryJson.users
-      .map((u) => u.user)
-      .filter((u) => u.username === username)[0].pk;
-
+    let searchedUsers;
+    let userId;
+    try {
+      searchedUsers = userQueryJson.users.map((u) => u.user);
+    } catch {
+      // presumably not logged in
+      const e = new Error("Instagram search failed, are you logged in?");
+      e.name = errorName;
+      throw e;
+    }
+    try {
+      userId = searchedUsers.filter((u) => u.username === username)[0].pk;
+    } catch {
+      // could not find user with given username
+      const e = new Error(
+        `Failed to find user "${username}", did you make a typo?`
+      );
+      e.name = errorName;
+      throw e;
+    }
     // we're only fetching the first mutuals that the query returns
     // during testing it's always fit into one query and returns plenty of mutual followers
     const mutualFollowerQueryRes = await fetch(
@@ -131,6 +149,13 @@ async function getMutuals(username) {
 
     console.log("Done with getting mutuals!");
   } catch (err) {
-    browser.runtime.sendMessage({ type: "error", error: err.stack });
+    if (err.name === errorName) {
+      browser.runtime.sendMessage({ type: "error", error: err.message });
+    } else {
+      browser.runtime.sendMessage({
+        type: "error",
+        error: `Encountered an unknown error. ${err.name}: ${err.message}`,
+      });
+    }
   }
 }
