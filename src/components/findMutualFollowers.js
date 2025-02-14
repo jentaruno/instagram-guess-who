@@ -24,7 +24,7 @@ export default async function handleClick(
       if (request.type === "mutuals") {
         // mutuals data received, start game
         console.log(request.mutuals);
-        handleResponse(request.mutuals);
+        handleResponse(request.mutuals, request.username);
       } else if (request.type === "error") {
         // pass error to the frontend
         console.log(request.error);

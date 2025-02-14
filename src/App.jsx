@@ -2,11 +2,21 @@ import { useState } from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
 import { ProfileCard } from "./components/ProfileCard.jsx";
 import { SelectionModal } from "./components/SelectionModal.jsx";
+import { createRoom, joinRoom } from "./components/p2p.js";
+import { BackButton } from "./components/BackButton.jsx";
 
 export default function App() {
+  const [friend, setFriend] = useState("");
   const [username, setUsername] = useState("");
   const [profiles, setProfiles] = useState([]);
-  const [isGaming, setIsGaming] = useState(false);
+  const [roomCode, setRoomCode] = useState("");
+  // status
+  // 0 = new page
+  // 1 = loaded mutuals
+  // 2 = createRoom
+  // 3 = joinRoom
+  // 4 = game start
+  const [status, setStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
@@ -14,7 +24,41 @@ export default function App() {
   function handleClick() {
     setError("");
     setIsLoading(true);
-    findMutualFollowers(username, handleResponse, handleError);
+    findMutualFollowers(friend, handleResponse, handleError);
+  }
+
+  function handleRoomBack() {
+    setError("");
+    setRoomCode("");
+    setStatus(1);
+  }
+
+  function handleCreateRoom() {
+    setError("");
+    setIsLoading(true);
+    createRoom(
+      profiles,
+      setProfiles,
+      username,
+      friend,
+      setStatus,
+      setRoomCode,
+      handleError
+    );
+  }
+
+  function handleJoinRoom() {
+    setError("");
+    setIsLoading(true);
+    joinRoom(
+      profiles,
+      setProfiles,
+      roomCode,
+      username,
+      friend,
+      setStatus,
+      handleError
+    );
   }
 
   function flipModal() {
@@ -26,15 +70,17 @@ export default function App() {
     setError(data);
   }
 
-  function handleResponse(data) {
+  function handleResponse(mutuals, username) {
+    // received mutuals data from instagram
+    setUsername(username);
     setProfiles(
-      data.map((e, i) => {
+      mutuals.map((e, i) => {
         return { ...e, selected: i < 24, enabled: true };
       })
     );
     setError("");
     setIsLoading(false);
-    setIsGaming(true);
+    setStatus(1);
   }
 
   function toggleCard(index) {
@@ -54,15 +100,16 @@ export default function App() {
   }
 
   function returnToMain() {
-    setIsGaming(false);
+    setStatus(0);
     setUsername("");
+    setFriend("");
     setProfiles([]);
     setIsLoading(false);
   }
 
   return (
     <>
-      {!isGaming ? (
+      {status !== 4 ? (
         <div
           className={
             "m-4 w-full flex flex-col gap-4 items-center justify-center"
@@ -70,31 +117,93 @@ export default function App() {
         >
           <h1>Instagram Guess Who</h1>
           <div className={"flex gap-4 items-center"}>
-            <input
-              className={"h-8 border border-2 border-gray"}
-              type="text"
-              onChange={(event) => {
-                setUsername(event.target.value);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  handleClick();
-                }
-              }}
-              disabled={isLoading}
-            />
-            <button
-              className={`${
-                isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
-              } 
+            {status === 0 && (
+              <>
+                <input
+                  className={"h-8 border border-2 border-gray"}
+                  type="text"
+                  onChange={(event) => {
+                    setFriend(event.target.value);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      handleClick();
+                    }
+                  }}
+                  disabled={isLoading}
+                />
+                <button
+                  className={`${
+                    isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
+                  } 
                         border-none text-white font-bold py-2 px-4 rounded`}
-              onClick={handleClick}
-              disabled={isLoading}
-              type="submit"
-            >
-              {!isLoading ? "Launch" : "Loading..."}
-            </button>
+                  onClick={handleClick}
+                  disabled={isLoading}
+                  type="submit"
+                >
+                  {!isLoading ? "Launch" : "Loading..."}
+                </button>
+              </>
+            )}
+            {status === 1 && (
+              <>
+                <BackButton onClick={returnToMain} />
+                <button
+                  className="bg-blue-500"
+                  onClick={() => {
+                    setStatus(2);
+                    handleCreateRoom();
+                  }}
+                >
+                  Create Room
+                </button>
+                <button
+                  className="bg-blue-500"
+                  onClick={() => {
+                    setStatus(3);
+                  }}
+                >
+                  Join Room
+                </button>
+              </>
+            )}
+            {status === 2 && (
+              <>
+                <BackButton onClick={handleRoomBack} />
+                <p>Room code: {roomCode}</p>
+              </>
+            )}
+            {status === 3 && (
+              <>
+                <BackButton onClick={handleRoomBack} />
+                <input
+                  className={"h-8 border border-2 border-gray"}
+                  type="text"
+                  onChange={(event) => {
+                    setRoomCode(event.target.value);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      handleJoinRoom();
+                    }
+                  }}
+                  disabled={isLoading}
+                />
+                <button
+                  className={`${
+                    isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
+                  } 
+                        border-none text-white font-bold py-2 px-4 rounded`}
+                  onClick={handleJoinRoom}
+                  disabled={isLoading}
+                  type="submit"
+                >
+                  {!isLoading ? "Join" : "Joining..."}
+                </button>
+              </>
+            )}
           </div>
           {error && <p className="text-red-500">{error}</p>}
         </div>
@@ -104,24 +213,10 @@ export default function App() {
             className={"mb-4 w-full flex flex-row justify-between items-center"}
           >
             <div className={"flex flex-row gap-4 items-center"}>
-              <button className={"p-0 border-none"} onClick={returnToMain}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-arrow-left"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
-                  />
-                </svg>
-              </button>
+              <BackButton onClick={returnToMain} />
               <h1 className={"mb-1"}>Instagram Guess Who</h1>
               <p className={"mb-1 ml-2 text-lg text-gray-400"}>
-                Playing with {username}
+                Playing with {friend}
               </p>
             </div>
             <button

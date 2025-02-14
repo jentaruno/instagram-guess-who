@@ -1,50 +1,37 @@
-# React + TypeScript + Vite
+# Instagram Guess Who
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## P2P Networking Notes
 
-Currently, two official plugins are available:
+when creating room, create short uuid (e.g. 6 chars)
+set id to be "username-uuid", hashed
+display uuid to user to get their friend to use
+friend will connect as "friend-uuid" and try to connect to "username-uuid" (both hashed)
+upon connection, do handshake. say who you are and the uuid (or who the other person is and the uuid?)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+UI: user fills in ig username of friend, logs in, gets mutuals, passes back to tab
+UI: tab updates with create game and join game button, user clicks one of them
+Create room flow:
 
-## Expanding the ESLint configuration
+- Generate random sequence for game code, create hash of own username and friend's username with UUID, open connection to peerserver
+- show UUID to user as room code
+- upon receiving connection, validate if their hash matches, and their sent username and UUID match. else terminate connection
+- send own username and UUID. receive mutuals data
+- find intersection of mutuals, send intersected mutuals back
+- receive confirmation. close connection and start game
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Join room flow:
 
-- Configure the top-level `parserOptions` property like this:
+- Enter room code to connect to friend's room
+- create hash of own username and friend's username with room code, open connection to peerserver and connect to friend
+- send username and UUID. if connection not terminated, receive and validate username and UUID. else terminate connection
+- send mutuals data
+- receive intersected mutuals. send confirmation.
+- if connection closed, start game.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Build
+
+```bash
+npm run build
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Add it to Chrome/Firefox extension, TODO link instructions
