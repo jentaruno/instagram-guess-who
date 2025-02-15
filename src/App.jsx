@@ -2,7 +2,7 @@ import { useState } from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
 import { ProfileCard } from "./components/ProfileCard.jsx";
 import { SelectionModal } from "./components/SelectionModal.jsx";
-import { createRoom, joinRoom } from "./components/p2p.js";
+import { createRoom, joinRoom, validateRoomCode } from "./components/p2p.js";
 import { BackButton } from "./components/BackButton.jsx";
 
 export default function App() {
@@ -20,6 +20,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
+  const [peer, setPeer] = useState();
+  const [conn, setConn] = useState();
 
   function handleClick() {
     setError("");
@@ -36,6 +38,7 @@ export default function App() {
   function handleCreateRoom() {
     setError("");
     setIsLoading(true);
+
     createRoom(
       profiles,
       setProfiles,
@@ -43,11 +46,19 @@ export default function App() {
       friend,
       setStatus,
       setRoomCode,
-      handleError
+      setPeer,
+      setConn,
+      updateProfiles,
+      returnToMain,
+      handleP2PError
     );
   }
 
   function handleJoinRoom() {
+    if (!validateRoomCode(roomCode)) {
+      setError("Error: invalid room code");
+      return;
+    }
     setError("");
     setIsLoading(true);
     joinRoom(
@@ -57,7 +68,11 @@ export default function App() {
       username,
       friend,
       setStatus,
-      handleError
+      setPeer,
+      setConn,
+      updateProfiles,
+      returnToMain,
+      handleP2PError
     );
   }
 
@@ -70,14 +85,28 @@ export default function App() {
     setError(data);
   }
 
+  function handleP2PError(data) {
+    // reset p2p connection
+    peer && peer.destroy();
+    setPeer();
+    setConn();
+    handleError(data);
+  }
+
+  function updateProfiles(selections) {
+    setProfiles(
+      profiles.map((profile, i) => ({
+        ...profile,
+        enabled: true,
+        selected: selections[i],
+      }))
+    );
+  }
+
   function handleResponse(mutuals, username) {
     // received mutuals data from instagram
     setUsername(username);
-    setProfiles(
-      mutuals.map((e, i) => {
-        return { ...e, selected: i < 24, enabled: true };
-      })
-    );
+    setProfiles(mutuals);
     setError("");
     setIsLoading(false);
     setStatus(1);
@@ -100,6 +129,8 @@ export default function App() {
   }
 
   function returnToMain() {
+    handleP2PError("");
+    setRoomCode("");
     setStatus(0);
     setUsername("");
     setFriend("");
@@ -246,7 +277,11 @@ export default function App() {
           {showModal && (
             <SelectionModal
               profiles={profiles}
-              setProfiles={setProfiles}
+              updateProfiles={(selections) => {
+                updateProfiles(selections);
+                flipModal();
+                conn.send(selections);
+              }}
               flipModal={flipModal}
             />
           )}

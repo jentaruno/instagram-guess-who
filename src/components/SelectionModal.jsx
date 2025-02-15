@@ -30,18 +30,6 @@ export function SelectionModal(props) {
   );
   const [valid, setValid] = useState(true);
 
-  // when Done, update profiles outside modal
-  function updateProfiles() {
-    props.setProfiles((prevProfiles) =>
-      prevProfiles.map((profile, i) => ({
-        ...profile,
-        enabled: true,
-        selected: selections[i],
-      }))
-    );
-    props.flipModal();
-  }
-
   // reset selections to default
   function resetSelections() {
     setSelections((prevSelections) =>
@@ -103,7 +91,9 @@ export function SelectionModal(props) {
               <button
                 type="submit"
                 className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:bg-gray-500"
-                onClick={updateProfiles}
+                onClick={() => {
+                  props.updateProfiles(selections);
+                }}
                 disabled={!valid}
               >
                 Done

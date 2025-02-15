@@ -33,6 +33,13 @@ function generateRoomCode() {
   return result;
 }
 
+export function validateRoomCode(roomCode) {
+  return (
+    roomCode.length === LENGTH &&
+    ![...roomCode].some((c) => !VALIDCHARS.includes(c))
+  );
+}
+
 async function roomInfo(roomCode, username, friend) {
   const userId = await sha256(`${username}${roomCode}`);
   const friendId = await sha256(`${friend}${roomCode}`);
@@ -48,6 +55,23 @@ function validate(data, friend, roomCode) {
   );
 }
 
+function setFirstMutuals(profiles, data, setProfiles) {
+  const filteredProfiles = profiles.filter((p) => data.includes(p.id));
+  const selectedProfiles = filteredProfiles.map((e, i) => {
+    return { ...e, selected: i < 24, enabled: true };
+  });
+  setProfiles(selectedProfiles);
+  return selectedProfiles;
+}
+
+function handleConnClose(stage, handleError) {
+  if (stage !== "playing") {
+    // connection was closed prematurely, throw error
+    handleError(`connection was closed in stage ${stage}`);
+  }
+  console.log("closed connection");
+}
+
 /*
 ROOM JOIN LOGIC
 */
@@ -59,25 +83,24 @@ export async function createRoom(
   friend,
   setStatus,
   setRoomCode,
+  setPeer,
+  setConn,
+  updateProfiles,
+  returnToMain,
   handleError
 ) {
+  function _handleErr(err) {
+    console.log({ err });
+    handleError(`${err.name}: ${err.message}`);
+  }
   // create room code and get ids
   const roomCode = generateRoomCode();
   const { userId, friendId } = await roomInfo(roomCode, username, friend);
 
   // connect to PeerServer
   const peer = new Peer(userId);
+  setPeer(peer);
 
-  // error handling helper
-  function createError(msg) {
-    // clear room code
-    setRoomCode("");
-    // log and display error
-    console.log(msg);
-    handleError(msg);
-    // close connection with peer
-    peer.destroy();
-  }
   try {
     peer.on("open", (id) => {
       console.log("My peer ID is: " + id);
@@ -87,29 +110,30 @@ export async function createRoom(
 
     // fired upon receiving connection, validate connection
     peer.on("connection", (conn) => {
+      setConn(conn);
       // if connection does not match expected id, close connection
       console.log(conn.peer);
       if (conn.peer !== friendId) conn.close();
       let stage = "validate";
+      conn.on("error", _handleErr);
       conn.on("data", (data) => {
         switch (stage) {
           // validate username and roomCode, else terminate connection
           case "validate": {
             if (!validate(data, friend, roomCode)) {
               conn.close();
-              createError("validation of incoming connection failed");
+              handleError("validation of incoming connection failed");
               break;
             }
 
-            // send own username and UUID
+            // send own username and roomCode
             conn.send({ username, roomCode });
             stage = "mutuals";
             break;
           }
           case "mutuals": {
-            console.log(data);
             // receive mutuals data, determine intersection
-            const filtered = profiles.filter((p) => data.includes(p.id));
+            const filtered = setFirstMutuals(profiles, data, setProfiles);
             // send intersected mutuals back
             conn.send(filtered.map((p) => p.id));
             stage = "confirmation";
@@ -119,26 +143,34 @@ export async function createRoom(
 
           case "confirmation":
             if (data === "confirmation") {
-              // confirmation of receipt. close connection
-              conn.close();
-              // change status to start game
+              // receipt confirmation, start game
               setStatus(4);
+              stage = "playing";
             }
+            break;
+
+          case "playing":
+            updateProfiles(data);
             break;
 
           default:
             // theoretically unreachable case, throw an error
-            createError("how did you reach this?");
+            handleError("how did you reach this?");
             break;
         }
       });
-    });
-    // fired if peer encounters error
-    peer.on("error", (err) => {
-      createError(`${err.name}: ${err.mesage}`);
+      conn.on("close", () => {
+        handleConnClose(stage, handleError);
+        if (stage === "playing") {
+          returnToMain();
+        }
+      });
+
+      // fired if peer encounters error
+      peer.on("error", _handleErr);
     });
   } catch (err) {
-    createError(`${err.name}: ${err.mesage}`);
+    _handleErr(err);
   }
 }
 
@@ -149,26 +181,35 @@ export async function joinRoom(
   username,
   friend,
   setStatus,
+  setPeer,
+  setConn,
+  updateProfiles,
+  returnToMain,
   handleError
 ) {
   const { userId, friendId } = await roomInfo(roomCode, username, friend);
 
   // connect to PeerServer
   const peer = new Peer(userId);
+  setPeer(peer);
 
-  // error handling helper
-  function createError(msg) {
-    // log and display error
-    console.log(msg);
-    handleError(msg);
-    // close connection with peer
+  function _handleErr(err) {
+    console.log({ err });
+    if (err.type === "peer-unavailable") {
+      handleError("Error: Could not connect. Is the room code correct?");
+    } else {
+      handleError(`${err.name}: ${err.message}`);
+    }
     peer.destroy();
+    setPeer();
   }
   try {
     peer.on("open", (id) => {
       console.log("My peer ID is: " + id);
       const conn = peer.connect(friendId);
+      setConn(conn);
       let stage = "validate";
+      conn.on("error", _handleErr);
       // send username and roomCode upon connection
       conn.on("open", () => {
         conn.send({ username, roomCode });
@@ -179,41 +220,44 @@ export async function joinRoom(
             // receive and validate username and roomCode
             if (!validate(data, friend, roomCode)) {
               conn.close();
-              createError("validation of incoming connection failed");
+              handleError("validation of incoming connection failed");
               break;
             }
             // send mutuals data
             stage = "mutuals";
             conn.send(profiles.map((p) => p.id));
             break;
-          case "mutuals":
+
+          case "mutuals": {
             // update profiles with intersected mutuals data
-            setProfiles(profiles.filter((p) => data.includes(p.id)));
-            console.log(data);
+            setFirstMutuals(profiles, data, setProfiles);
             // send confirmation
-            stage = "confirmation";
+            stage = "playing";
             conn.send("confirmation");
+            // start game
+            setStatus(4);
             break;
+          }
+
+          case "playing":
+            updateProfiles(data);
+            break;
+
           default:
             // theoretically unreachable case, throw an error
-            createError("how did you reach this?");
+            handleError("how did you reach this?");
             break;
         }
       });
       conn.on("close", () => {
-        if (stage === "confirmation") {
-          // start game
-          setStatus(4);
-        } else {
-          // connection was closed prematurely, throw error
-          createError(`connection was closed in stage ${stage}`);
+        handleConnClose(stage, handleError);
+        if (stage === "playing") {
+          returnToMain();
         }
       });
     });
-    peer.on("error", (err) => {
-      createError(`${err.name}: ${err.message}`);
-    });
+    peer.on("error", _handleErr);
   } catch (err) {
-    createError(`${err.name}: ${err.message}`);
+    _handleErr(err);
   }
 }
