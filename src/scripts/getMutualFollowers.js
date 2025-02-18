@@ -35,13 +35,12 @@ async function imageUrlToBase64(url) {
 
 async function getOwnUsername() {
   try {
-    fetch("https://www.instagram.com/accounts/edit/", {
+    return fetch("https://www.instagram.com/accounts/edit/", {
       credentials: "include",
     })
       .then((response) => response.text())
       .then((text) => {
-        const username = text.match(/"username":"(.*?)"/)?.[1];
-        return username;
+        return text.match(/"username":"(.*?)"/)?.[1];
       });
   } catch (err) {
     const e = new Error(`Error while getting own username: ${err.message}`);

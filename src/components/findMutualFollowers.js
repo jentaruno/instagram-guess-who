@@ -23,7 +23,7 @@ export default async function handleClick(
       console.log("response received from tab");
       if (request.type === "mutuals") {
         // mutuals data received, start game
-        console.log(request.mutuals);
+        console.log(request);
         handleResponse(request.mutuals, request.username);
       } else if (request.type === "error") {
         // pass error to the frontend
