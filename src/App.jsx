@@ -64,7 +64,6 @@ export default function App() {
       username,
       friend,
       setStatus,
-      peer,
       setPeer,
       setConn,
       updateProfiles,
