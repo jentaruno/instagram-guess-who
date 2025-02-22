@@ -146,10 +146,15 @@ export default function App() {
             "m-4 w-full flex flex-col gap-4 items-center justify-center"
           }
         >
-          <h1>Instagram Guess Who</h1>
+          <img
+              alt={"Instagram Guess Who Logo"}
+              src={"./logo-text.png"}
+              className={"w-5/6 md:w-1/2"}
+          />
           <div className={"flex gap-4 items-center"}>
             {status === 0 && (
               <>
+                <p>Friend's Instagram username:</p>
                 <input
                   className={"h-8 border border-2 border-gray"}
                   type="text"
