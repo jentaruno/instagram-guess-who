@@ -51,7 +51,7 @@ export default function App() {
       setError("Error: invalid room code");
       return;
     }
-    handleP2PError("");
+    disconnectPeer();
     setIsLoading(true);
     joinRoom(
       profiles,
@@ -77,11 +77,16 @@ export default function App() {
     setError(data);
   }
 
-  function handleP2PError(data) {
+  function disconnectPeer() {
     // reset p2p connection
     peer && peer.destroy();
     setPeer();
     setConn();
+  }
+
+  function handleP2PError(data) {
+    disconnectPeer();
+    handleCreateRoom(profiles, username);
     handleError(data);
   }
 
@@ -122,8 +127,11 @@ export default function App() {
   }
 
   function returnToMain() {
-    handleP2PError("");
+    disconnectPeer();
+    setError("");
     setRoomCode("");
+    setFriendRoomCode("");
+    setShowModal(false);
     setStatus(0);
     setUsername("");
     setFriend("");
