@@ -184,6 +184,7 @@ export async function joinRoom(
   username,
   friend,
   setStatus,
+  peer,
   setPeer,
   setConn,
   updateProfiles,
@@ -196,10 +197,6 @@ export async function joinRoom(
   console.log("Friend ", friend);
   const { userId, friendId } = await roomInfo(roomCode, username, friend);
 
-  // connect to PeerServer
-  const peer = new Peer(userId);
-  setPeer(peer);
-
   function _handleErr(err) {
     console.log({ err });
     if (err.type === "peer-unavailable") {
@@ -210,60 +207,11 @@ export async function joinRoom(
     peer.destroy();
     setPeer();
   }
+
   try {
-    peer.on("open", (id) => {
-      console.log("My peer ID is: " + id);
-      const conn = peer.connect(friendId);
-      setConn(conn);
-      let stage = "validate";
-      conn.on("error", _handleErr);
-      // send username and roomCode upon connection
-      conn.on("open", () => {
-        conn.send({ username, roomCode });
-      });
-      conn.on("data", (data) => {
-        switch (stage) {
-          case "validate":
-            // receive and validate username and roomCode
-            if (!validate(data, friend, roomCode)) {
-              conn.close();
-              handleError("validation of incoming connection failed");
-              break;
-            }
-            // send mutuals data
-            stage = "mutuals";
-            conn.send(profiles.map((p) => p.id));
-            break;
-
-          case "mutuals": {
-            // update profiles with intersected mutuals data
-            setFirstMutuals(profiles, data, setProfiles);
-            // send confirmation
-            stage = "playing";
-            conn.send("confirmation");
-            // start game
-            setStatus(4);
-            break;
-          }
-
-          case "playing":
-            updateProfiles(data);
-            break;
-
-          default:
-            // theoretically unreachable case, throw an error
-            handleError("how did you reach this?");
-            break;
-        }
-      });
-      conn.on("close", () => {
-        handleConnClose(stage, handleError);
-        if (stage === "playing") {
-          returnToMain();
-        }
-      });
-    });
-    peer.on("error", _handleErr);
+    // connect to PeerServer
+    const conn = peer.connect(friendId);
+    setConn(conn);
   } catch (err) {
     _handleErr(err);
   }
