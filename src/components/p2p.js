@@ -19,10 +19,9 @@ async function sha256(message) {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
 
   // convert bytes to hex string
-  const hashHex = hashArray
+  return hashArray
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
-  return hashHex;
 }
 
 // adapted from https://stackoverflow.com/a/10727155
@@ -95,6 +94,10 @@ export async function createRoom(
   }
   // create room code and get ids
   const roomCode = generateRoomCode();
+  console.log("Creating room...");
+  console.log("Room ", roomCode);
+  console.log("Username ", username);
+  console.log("Friend ", friend);
   const { userId, friendId } = await roomInfo(roomCode, username, friend);
 
   // connect to PeerServer
@@ -187,6 +190,10 @@ export async function joinRoom(
   returnToMain,
   handleError
 ) {
+  console.log("Joining...");
+  console.log("Room ", roomCode);
+  console.log("Username ", username);
+  console.log("Friend ", friend);
   const { userId, friendId } = await roomInfo(roomCode, username, friend);
 
   // connect to PeerServer

@@ -11,11 +11,10 @@ export default function App() {
   const [username, setUsername] = useState("");
   const [profiles, setProfiles] = useState([]);
   const [roomCode, setRoomCode] = useState("");
+  const [friendRoomCode, setFriendRoomCode] = useState("");
   // status
   // 0 = new page
   // 1 = loaded mutuals
-  // 2 = createRoom
-  // 3 = joinRoom
   // 4 = game start
   const [status, setStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,17 +29,11 @@ export default function App() {
     findMutualFollowers(friend, handleResponse, handleError);
   }
 
-  function handleRoomBack() {
-    setError("");
-    setRoomCode("");
-    setStatus(1);
-  }
-
-  function handleCreateRoom() {
+  async function handleCreateRoom(username) {
     setError("");
     setIsLoading(true);
 
-    createRoom(
+    await createRoom(
       profiles,
       setProfiles,
       username,
@@ -53,10 +46,12 @@ export default function App() {
       returnToMain,
       handleP2PError
     );
+
+    setIsLoading(false);
   }
 
   function handleJoinRoom() {
-    if (!validateRoomCode(roomCode)) {
+    if (!validateRoomCode(friendRoomCode)) {
       setError("Error: invalid room code");
       return;
     }
@@ -65,7 +60,7 @@ export default function App() {
     joinRoom(
       profiles,
       setProfiles,
-      roomCode,
+      friendRoomCode,
       username,
       friend,
       setStatus,
@@ -110,6 +105,7 @@ export default function App() {
     setProfiles(mutuals);
     setError("");
     setIsLoading(false);
+    handleCreateRoom(username);
     setStatus(1);
   }
 
@@ -160,62 +156,39 @@ export default function App() {
                   handleClick={handleClick}/>
             )}
             {status === 1 && (
-              <>
+              <div className={"flex flex-col"}>
                 <BackButton onClick={returnToMain} />
-                <button
-                  className="bg-blue-500"
-                  onClick={() => {
-                    setStatus(2);
-                    handleCreateRoom();
-                  }}
-                >
-                  Create Room
-                </button>
-                <button
-                  className="bg-blue-500"
-                  onClick={() => {
-                    setStatus(3);
-                  }}
-                >
-                  Join Room
-                </button>
-              </>
-            )}
-            {status === 2 && (
-              <>
-                <BackButton onClick={handleRoomBack} />
-                <p>Room code: {roomCode}</p>
-              </>
-            )}
-            {status === 3 && (
-              <>
-                <BackButton onClick={handleRoomBack} />
-                <input
-                  className={"h-8 border border-2 border-gray"}
-                  type="text"
-                  onChange={(event) => {
-                    setRoomCode(event.target.value);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      handleJoinRoom();
-                    }
-                  }}
-                  disabled={isLoading}
-                />
-                <button
-                  className={`${
-                    isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
-                  } 
-                        border-none text-white font-bold py-2 px-4 rounded`}
-                  onClick={handleJoinRoom}
-                  disabled={isLoading}
-                  type="submit"
-                >
-                  {!isLoading ? "Join" : "Joining..."}
-                </button>
-              </>
+                <p>Have your friend join:</p>
+                <h3>{roomCode}</h3>
+                <p>Or join their room:</p>
+                <div className={"flex flex-row"}>
+                  <input
+                      className={"h-8 border border-2 border-gray"}
+                      type="text"
+                      onChange={(event) => {
+                        setFriendRoomCode(event.target.value);
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          event.preventDefault();
+                          handleJoinRoom();
+                        }
+                      }}
+                      disabled={isLoading}
+                  />
+                  <button
+                      className={`${
+                          isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
+                      } 
+                          border-none text-white font-bold py-2 px-4 rounded`}
+                      onClick={handleJoinRoom}
+                      disabled={isLoading}
+                      type="submit"
+                  >
+                    {!isLoading ? "Join" : "Joining..."}
+                  </button>
+                </div>
+              </div>
             )}
           </div>
           {error && <p className="text-red-500">{error}</p>}
