@@ -14,8 +14,6 @@ export default function App() {
   // status
   // 0 = new page
   // 1 = loaded mutuals
-  // 2 = createRoom
-  // 3 = joinRoom
   // 4 = game start
   const [status, setStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
