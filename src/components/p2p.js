@@ -19,9 +19,7 @@ async function sha256(message) {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
 
   // convert bytes to hex string
-  return hashArray
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 // adapted from https://stackoverflow.com/a/10727155
@@ -103,7 +101,6 @@ export async function createRoom(
   // connect to PeerServer
   const peer = new Peer(userId);
   setPeer(peer);
-
   try {
     peer.on("open", (id) => {
       console.log("My peer ID is: " + id);
@@ -120,6 +117,8 @@ export async function createRoom(
       let stage = "validate";
       conn.on("error", _handleErr);
       conn.on("data", (data) => {
+        console.log("stage: " + stage);
+        console.log(data);
         switch (stage) {
           // validate username and roomCode, else terminate connection
           case "validate": {
@@ -140,7 +139,6 @@ export async function createRoom(
             // send intersected mutuals back
             conn.send(filtered.map((p) => p.id));
             stage = "confirmation";
-            setProfiles(filtered);
             break;
           }
 
@@ -195,7 +193,6 @@ export async function joinRoom(
   console.log("Username ", username);
   console.log("Friend ", friend);
   const { userId, friendId } = await roomInfo(roomCode, username, friend);
-
   // connect to PeerServer
   const peer = new Peer(userId);
   setPeer(peer);
@@ -222,6 +219,8 @@ export async function joinRoom(
         conn.send({ username, roomCode });
       });
       conn.on("data", (data) => {
+        console.log("stage: " + stage);
+        console.log(data);
         switch (stage) {
           case "validate":
             // receive and validate username and roomCode

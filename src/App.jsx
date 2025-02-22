@@ -1,10 +1,10 @@
-import {useState} from "react";
+import { useState } from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
-import {ProfileCard} from "./components/ProfileCard.jsx";
-import {SelectionModal} from "./components/SelectionModal.jsx";
-import {createRoom, joinRoom, validateRoomCode} from "./components/p2p.js";
-import {BackButton} from "./components/BackButton.jsx";
-import {FriendUsernameInputSection} from "./FriendUsernameInputSection.jsx";
+import { ProfileCard } from "./components/ProfileCard.jsx";
+import { SelectionModal } from "./components/SelectionModal.jsx";
+import { createRoom, joinRoom, validateRoomCode } from "./components/p2p.js";
+import { BackButton } from "./components/BackButton.jsx";
+import { FriendUsernameInputSection } from "./FriendUsernameInputSection.jsx";
 
 export default function App() {
   const [friend, setFriend] = useState("");
@@ -29,12 +29,10 @@ export default function App() {
     findMutualFollowers(friend, handleResponse, handleError);
   }
 
-  async function handleCreateRoom(username) {
+  function handleCreateRoom(mutuals, username) {
     setError("");
-    setIsLoading(true);
-
-    await createRoom(
-      profiles,
+    createRoom(
+      mutuals,
       setProfiles,
       username,
       friend,
@@ -46,8 +44,6 @@ export default function App() {
       returnToMain,
       handleP2PError
     );
-
-    setIsLoading(false);
   }
 
   function handleJoinRoom() {
@@ -55,7 +51,7 @@ export default function App() {
       setError("Error: invalid room code");
       return;
     }
-    setError("");
+    handleP2PError("");
     setIsLoading(true);
     joinRoom(
       profiles,
@@ -105,7 +101,7 @@ export default function App() {
     setProfiles(mutuals);
     setError("");
     setIsLoading(false);
-    handleCreateRoom(username);
+    handleCreateRoom(mutuals, username);
     setStatus(1);
   }
 
@@ -144,16 +140,17 @@ export default function App() {
           }
         >
           <img
-              alt={"Instagram Guess Who Logo"}
-              src={"./logo-text.png"}
-              className={"w-5/6 md:w-1/2"}
+            alt={"Instagram Guess Who Logo"}
+            src={"./logo-text.png"}
+            className={"w-5/6 md:w-1/2"}
           />
           <div className={"flex gap-4 items-center"}>
             {status === 0 && (
               <FriendUsernameInputSection
-                  isLoading={isLoading}
-                  setFriend={setFriend}
-                  handleClick={handleClick}/>
+                isLoading={isLoading}
+                setFriend={setFriend}
+                handleClick={handleClick}
+              />
             )}
             {status === 1 && (
               <div className={"flex flex-col"}>
@@ -163,27 +160,29 @@ export default function App() {
                 <p>Or join their room:</p>
                 <div className={"flex flex-row"}>
                   <input
-                      className={"h-8 border border-2 border-gray"}
-                      type="text"
-                      onChange={(event) => {
-                        setFriendRoomCode(event.target.value);
-                      }}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                          event.preventDefault();
-                          handleJoinRoom();
-                        }
-                      }}
-                      disabled={isLoading}
+                    className={"h-8 border border-2 border-gray"}
+                    type="text"
+                    onChange={(event) => {
+                      setFriendRoomCode(event.target.value);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        handleJoinRoom();
+                      }
+                    }}
+                    disabled={isLoading}
                   />
                   <button
-                      className={`${
-                          isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
-                      } 
+                    className={`${
+                      isLoading
+                        ? "bg-blue-300"
+                        : "bg-blue-500 hover:bg-blue-700"
+                    } 
                           border-none text-white font-bold py-2 px-4 rounded`}
-                      onClick={handleJoinRoom}
-                      disabled={isLoading}
-                      type="submit"
+                    onClick={handleJoinRoom}
+                    disabled={isLoading}
+                    type="submit"
                   >
                     {!isLoading ? "Join" : "Joining..."}
                   </button>
