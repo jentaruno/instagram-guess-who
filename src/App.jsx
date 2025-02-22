@@ -1,9 +1,10 @@
-import { useState } from "react";
+import {useState} from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
-import { ProfileCard } from "./components/ProfileCard.jsx";
-import { SelectionModal } from "./components/SelectionModal.jsx";
-import { createRoom, joinRoom, validateRoomCode } from "./components/p2p.js";
-import { BackButton } from "./components/BackButton.jsx";
+import {ProfileCard} from "./components/ProfileCard.jsx";
+import {SelectionModal} from "./components/SelectionModal.jsx";
+import {createRoom, joinRoom, validateRoomCode} from "./components/p2p.js";
+import {BackButton} from "./components/BackButton.jsx";
+import {FriendUsernameInputSection} from "./FriendUsernameInputSection.jsx";
 
 export default function App() {
   const [friend, setFriend] = useState("");
@@ -153,34 +154,10 @@ export default function App() {
           />
           <div className={"flex gap-4 items-center"}>
             {status === 0 && (
-              <>
-                <p>Friend's Instagram username:</p>
-                <input
-                  className={"h-8 border border-2 border-gray"}
-                  type="text"
-                  onChange={(event) => {
-                    setFriend(event.target.value);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      handleClick();
-                    }
-                  }}
-                  disabled={isLoading}
-                />
-                <button
-                  className={`${
-                    isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
-                  } 
-                        border-none text-white font-bold py-2 px-4 rounded`}
-                  onClick={handleClick}
-                  disabled={isLoading}
-                  type="submit"
-                >
-                  {!isLoading ? "Launch" : "Loading..."}
-                </button>
-              </>
+              <FriendUsernameInputSection
+                  isLoading={isLoading}
+                  setFriend={setFriend}
+                  handleClick={handleClick}/>
             )}
             {status === 1 && (
               <>
