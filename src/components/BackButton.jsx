@@ -1,6 +1,6 @@
 export function BackButton(props) {
   return (
-    <button className={"p-0 border-none"} onClick={props.onClick}>
+    <button className={"p-0 border-none focus:outline-none"} onClick={props.onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"

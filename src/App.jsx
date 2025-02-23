@@ -1,10 +1,11 @@
-import { useState } from "react";
+import {useState} from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
-import { ProfileCard } from "./components/ProfileCard.jsx";
-import { SelectionModal } from "./components/SelectionModal.jsx";
-import { createRoom, joinRoom, validateRoomCode } from "./components/p2p.js";
-import { BackButton } from "./components/BackButton.jsx";
-import { FriendUsernameInputSection } from "./FriendUsernameInputSection.jsx";
+import {ProfileCard} from "./components/ProfileCard.jsx";
+import {SelectionModal} from "./components/SelectionModal.jsx";
+import {createRoom, joinRoom, validateRoomCode} from "./components/p2p.js";
+import {BackButton} from "./components/BackButton.jsx";
+import {FriendUsernameInputSection} from "./FriendUsernameInputSection.jsx";
+import {CreateJoinRoomSection} from "./CreateJoinRoomSection.jsx";
 
 export default function App() {
   const [friend, setFriend] = useState("");
@@ -153,50 +154,21 @@ export default function App() {
             className={"w-5/6 md:w-1/2"}
           />
           <div className={"flex gap-4 items-center"}>
-            {status === 0 && (
+            {status === 0 &&
               <FriendUsernameInputSection
                 isLoading={isLoading}
                 setFriend={setFriend}
                 handleClick={handleClick}
+              />}
+            {status === 1 &&
+              <CreateJoinRoomSection
+                  isLoading={isLoading}
+                  handleBack={returnToMain}
+                  handleJoinRoom={handleJoinRoom}
+                  roomCode={roomCode}
+                  setFriendRoomCode={setFriendRoomCode}
               />
-            )}
-            {status === 1 && (
-              <div className={"flex flex-col"}>
-                <BackButton onClick={returnToMain} />
-                <p>Have your friend join:</p>
-                <h3>{roomCode}</h3>
-                <p>Or join their room:</p>
-                <div className={"flex flex-row"}>
-                  <input
-                    className={"h-8 border border-2 border-gray"}
-                    type="text"
-                    onChange={(event) => {
-                      setFriendRoomCode(event.target.value);
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter") {
-                        event.preventDefault();
-                        handleJoinRoom();
-                      }
-                    }}
-                    disabled={isLoading}
-                  />
-                  <button
-                    className={`${
-                      isLoading
-                        ? "bg-blue-300"
-                        : "bg-blue-500 hover:bg-blue-700"
-                    } 
-                          border-none text-white font-bold py-2 px-4 rounded`}
-                    onClick={handleJoinRoom}
-                    disabled={isLoading}
-                    type="submit"
-                  >
-                    {!isLoading ? "Join" : "Joining..."}
-                  </button>
-                </div>
-              </div>
-            )}
+            }
           </div>
           {error && <p className="text-red-500">{error}</p>}
         </div>
@@ -212,22 +184,24 @@ export default function App() {
                 Playing with {friend}
               </p>
             </div>
-            <button
-              className={
-                "bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
-              }
-              onClick={flipModal}
-            >
-              Select Users
-            </button>
-            <button
-              className={
-                "bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
-              }
-              onClick={resetAll}
-            >
-              Reset All
-            </button>
+            <div>
+              <button
+                className={
+                  "mr-4 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+                }
+                onClick={flipModal}
+              >
+                Select Users
+              </button>
+              <button
+                className={
+                  "bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+                }
+                onClick={resetAll}
+              >
+                Reset All
+              </button>
+            </div>
           </div>
           <div className={"grid grid-cols-8 gap-4"}>
             {profiles
