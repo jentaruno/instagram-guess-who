@@ -1,11 +1,11 @@
-import {useState} from "react";
+import { useState } from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
-import {ProfileCard} from "./components/ProfileCard.jsx";
-import {SelectionModal} from "./components/SelectionModal.jsx";
-import {createRoom, joinRoom, validateRoomCode} from "./components/p2p.js";
-import {BackButton} from "./components/BackButton.jsx";
-import {FriendUsernameInputSection} from "./FriendUsernameInputSection.jsx";
-import {CreateJoinRoomSection} from "./CreateJoinRoomSection.jsx";
+import { ProfileCard } from "./components/ProfileCard.jsx";
+import { SelectionModal } from "./components/SelectionModal.jsx";
+import { createRoom, joinRoom, validateRoomCode } from "./components/p2p.js";
+import { BackButton } from "./components/BackButton.jsx";
+import { FriendUsernameInputSection } from "./FriendUsernameInputSection.jsx";
+import { CreateJoinRoomSection } from "./CreateJoinRoomSection.jsx";
 
 export default function App() {
   const [friend, setFriend] = useState("");
@@ -92,12 +92,16 @@ export default function App() {
   }
 
   function updateProfiles(selections) {
-    setProfiles(
-      profiles.map((profile, i) => ({
-        ...profile,
-        enabled: true,
-        selected: selections[i],
-      }))
+    console.log(profiles);
+    setProfiles((prevProfiles) =>
+      prevProfiles.map((profile, i) => {
+        console.log(profile);
+        return {
+          ...profile,
+          enabled: true,
+          selected: selections[i],
+        };
+      })
     );
   }
 
@@ -154,21 +158,22 @@ export default function App() {
             className={"w-5/6 md:w-1/2"}
           />
           <div className={"flex gap-4 items-center"}>
-            {status === 0 &&
+            {status === 0 && (
               <FriendUsernameInputSection
                 isLoading={isLoading}
                 setFriend={setFriend}
                 handleClick={handleClick}
-              />}
-            {status === 1 &&
-              <CreateJoinRoomSection
-                  isLoading={isLoading}
-                  handleBack={returnToMain}
-                  handleJoinRoom={handleJoinRoom}
-                  roomCode={roomCode}
-                  setFriendRoomCode={setFriendRoomCode}
               />
-            }
+            )}
+            {status === 1 && (
+              <CreateJoinRoomSection
+                isLoading={isLoading}
+                handleBack={returnToMain}
+                handleJoinRoom={handleJoinRoom}
+                roomCode={roomCode}
+                setFriendRoomCode={setFriendRoomCode}
+              />
+            )}
           </div>
           {error && <p className="text-red-500">{error}</p>}
         </div>
