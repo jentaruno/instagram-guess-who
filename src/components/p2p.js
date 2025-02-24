@@ -52,13 +52,13 @@ function validate(data, friend, roomCode) {
   );
 }
 
-function setFirstMutuals(profiles, data, setProfiles) {
-  const filteredProfiles = profiles.filter((p) => data.includes(p.id));
-  const selectedProfiles = filteredProfiles.map((e, i) => {
-    return { ...e, selected: i < 24, enabled: true };
+function setFirstMutuals(data, setProfiles) {
+  setProfiles((prevProfiles) => {
+    const filteredProfiles = prevProfiles.filter((p) => data.includes(p.id));
+    return filteredProfiles.map((profile, i) => {
+      return { ...profile, selected: i < 24, enabled: true };
+    });
   });
-  setProfiles(selectedProfiles);
-  return selectedProfiles;
 }
 
 function handleConnClose(stage, handleError) {
@@ -135,9 +135,9 @@ export async function createRoom(
           }
           case "mutuals": {
             // receive mutuals data, determine intersection
-            const filtered = setFirstMutuals(profiles, data, setProfiles);
-            // send intersected mutuals back
-            conn.send(filtered.map((p) => p.id));
+            setFirstMutuals(data, setProfiles);
+            // send mutuals back
+            conn.send(profiles);
             stage = "confirmation";
             break;
           }
@@ -235,8 +235,8 @@ export async function joinRoom(
             break;
 
           case "mutuals": {
-            // update profiles with intersected mutuals data
-            setFirstMutuals(profiles, data, setProfiles);
+            // update profiles with mutuals data
+            setFirstMutuals(data, setProfiles);
             // send confirmation
             stage = "playing";
             conn.send("confirmation");
