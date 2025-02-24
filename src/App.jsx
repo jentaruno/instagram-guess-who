@@ -48,7 +48,7 @@ export default function App() {
   }
 
   function handleJoinRoom() {
-    if (!validateRoomCode(friendRoomCode)) {
+    if (!validateRoomCode(friendRoomCode.toUpperCase())) {
       setError("Error: invalid room code");
       return;
     }
@@ -57,7 +57,7 @@ export default function App() {
     joinRoom(
       profiles,
       setProfiles,
-      friendRoomCode,
+      friendRoomCode.toUpperCase(),
       username,
       friend,
       setStatus,
