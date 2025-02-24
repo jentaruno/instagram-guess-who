@@ -35,8 +35,10 @@ export default function App() {
     createRoom(
       mutuals,
       setProfiles,
-      username,
-      friend,
+      "kaisoapbox",
+      "jentaruno",
+      // username,
+      // friend,
       setStatus,
       setRoomCode,
       setPeer,
@@ -58,8 +60,10 @@ export default function App() {
       profiles,
       setProfiles,
       friendRoomCode.toUpperCase(),
-      username,
-      friend,
+      // username,
+      // friend,
+      "jentaruno",
+      "kaisoapbox",
       setStatus,
       setPeer,
       setConn,
@@ -116,11 +120,19 @@ export default function App() {
   }
 
   function toggleCard(index) {
-    setProfiles((prevProfiles) =>
-      prevProfiles.map((profile, i) =>
-        i === index ? { ...profile, enabled: !profile.enabled } : profile
-      )
-    );
+    setProfiles((prevProfiles) => {
+      let numSelected = 0;
+      return prevProfiles.map((profile) => {
+        const newProfile =
+          profile.selected && numSelected === index
+            ? { ...profile, enabled: !profile.enabled }
+            : profile;
+        if (profile.selected) {
+          numSelected += 1;
+        }
+        return newProfile;
+      });
+    });
   }
 
   function resetAll() {
