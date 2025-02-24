@@ -137,7 +137,7 @@ export async function createRoom(
             // receive mutuals data, determine intersection
             setFirstMutuals(data, setProfiles);
             // send mutuals back
-            conn.send(profiles);
+            conn.send(profiles.map((p) => p.id));
             stage = "confirmation";
             break;
           }
