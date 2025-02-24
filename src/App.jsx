@@ -32,13 +32,12 @@ export default function App() {
 
   function handleCreateRoom(mutuals, username) {
     setError("");
+    setRoomCode("");
     createRoom(
       mutuals,
       setProfiles,
-      "kaisoapbox",
-      "jentaruno",
-      // username,
-      // friend,
+      username,
+      friend,
       setStatus,
       setRoomCode,
       setPeer,
@@ -60,10 +59,8 @@ export default function App() {
       profiles,
       setProfiles,
       friendRoomCode.toUpperCase(),
-      // username,
-      // friend,
-      "jentaruno",
-      "kaisoapbox",
+      username,
+      friend,
       setStatus,
       setPeer,
       setConn,
