@@ -35,8 +35,10 @@ export default function App() {
     createRoom(
       mutuals,
       setProfiles,
-      username,
-      friend,
+      "jentaruno",
+      "kaisoapbox",
+      // username,
+      // friend,
       setStatus,
       setRoomCode,
       setPeer,
@@ -58,8 +60,10 @@ export default function App() {
       profiles,
       setProfiles,
       friendRoomCode.toUpperCase(),
-      username,
-      friend,
+      "kaisoapbox",
+        "jentaruno",
+      // username,
+      // friend,
       setStatus,
       setPeer,
       setConn,
@@ -184,7 +188,11 @@ export default function App() {
           >
             <div className={"flex flex-row gap-4 items-center"}>
               <BackButton onClick={returnToMain} />
-              <h1 className={"mb-1"}>Instagram Guess Who</h1>
+              <img
+                  alt={"Instagram Guess Who Logo"}
+                  src={"./logo-oneline.png"}
+                  className={"w-5/6 md:w-1/2"}
+              />
               <p className={"mb-1 ml-2 text-lg text-gray-400"}>
                 Playing with {friend}
               </p>

@@ -47,68 +47,92 @@ export function SelectionModal(props) {
     setValid(newValid);
   }
   return (
-    <div
-      className="relative z-10"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
       <div
-        className="fixed inset-0 bg-gray-500/75 transition-opacity"
-        aria-hidden="true"
-      ></div>
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <div className="bg-gray-700 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          className="relative z-10"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+      >
+        <div
+            className="fixed inset-0 bg-gray-500/75 transition-opacity"
+            aria-hidden="true"
+        ></div>
+        <div className="fixed inset-0 z-10 flex items-center justify-center">
+          <div className="relative w-5/6 h-5/6 max-w-2xl rounded-lg shadow-xl bg-gray-700 overflow-hidden">
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto max-h-full px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
-                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <h3
-                    className="text-base font-semibold text-gray-900"
-                    id="modal-title"
-                  >
+                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                  <h3 className="mb-2 font-semibold" id="modal-title">
                     Select Friends
                   </h3>
-                  <div className="flex flex-col gap-2">
+                  <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {selections.map((isSelected, index) => (
-                      // TODO render a mini profile card row nicely
-                      <label className="flex flex-row h-[50px] justify-between p-2 bg-blue-500 rounded-md">
-                        <ProfileRow profile={props.profiles[index]} />
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => {
-                            toggleSelection(index);
-                          }}
-                        />
-                      </label>
+                        <label
+                            key={index}
+                            className="flex flex-row h-[50px] justify-between p-2 bg-blue-500 rounded-md"
+                        >
+                          <ProfileRow profile={props.profiles[index]} />
+                          <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={isSelected}
+                              onChange={() => {
+                                toggleSelection(index);
+                              }}
+                          />
+                          <svg
+                              className={"fill-white absolute right-0 peer-checked:invisible"}
+                              width="1rem" height="1rem"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg">
+                            <g>
+                              <path fill="none" d="M0 0h24v24H0z"/>
+                              <path
+                                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+                            </g>
+                          </svg>
+                          <svg
+                              className={"fill-white absolute right-0 invisible peer-hover:visible peer-hover:opacity-50 peer-checked:visible peer-checked:peer-hover:opacity-100"}
+                              width="1rem"
+                              height="1rem"
+                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <g>
+                              <path fill="none" d="M0 0h24v24H0z"/>
+                              <path
+                                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/>
+                            </g>
+                          </svg>
+                        </label>
                     ))}
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Footer Buttons */}
             <div className="bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 items-center justify-between">
               <button
-                type="submit"
-                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:bg-gray-500"
-                onClick={() => {
-                  props.updateProfiles(selections);
-                }}
-                disabled={!valid}
+                  type="submit"
+                  className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:bg-gray-500"
+                  onClick={() => {
+                    props.updateProfiles(selections);
+                  }}
+                  disabled={!valid}
               >
                 Done
               </button>
               <button
-                type="reset"
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                onClick={resetSelections}
+                  type="reset"
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  onClick={resetSelections}
               >
                 Reset
               </button>
               <button
-                type="button"
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                onClick={props.flipModal}
+                  type="button"
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  onClick={props.flipModal}
               >
                 Cancel
               </button>
@@ -119,6 +143,5 @@ export function SelectionModal(props) {
           </div>
         </div>
       </div>
-    </div>
   );
 }
