@@ -166,10 +166,9 @@ export async function createRoom(
           returnToMain();
         }
       });
-
-      // fired if peer encounters error
-      peer.on("error", _handleErr);
     });
+    // fired if peer encounters error
+    peer.on("error", _handleErr);
   } catch (err) {
     _handleErr(err);
   }
@@ -262,6 +261,7 @@ export async function joinRoom(
         }
       });
     });
+    // fired when peer encounters error
     peer.on("error", _handleErr);
   } catch (err) {
     _handleErr(err);

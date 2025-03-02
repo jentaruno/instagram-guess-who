@@ -32,6 +32,7 @@ export default function App() {
 
   function handleCreateRoom(mutuals, username) {
     setError("");
+    setRoomCode("");
     createRoom(
       mutuals,
       setProfiles,
@@ -120,11 +121,19 @@ export default function App() {
   }
 
   function toggleCard(index) {
-    setProfiles((prevProfiles) =>
-      prevProfiles.map((profile, i) =>
-        i === index ? { ...profile, enabled: !profile.enabled } : profile
-      )
-    );
+    setProfiles((prevProfiles) => {
+      let numSelected = 0;
+      return prevProfiles.map((profile) => {
+        const newProfile =
+          profile.selected && numSelected === index
+            ? { ...profile, enabled: !profile.enabled }
+            : profile;
+        if (profile.selected) {
+          numSelected += 1;
+        }
+        return newProfile;
+      });
+    });
   }
 
   function resetAll() {
