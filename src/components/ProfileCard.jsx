@@ -3,10 +3,10 @@ export function ProfileCard(props) {
     <div
       className={`${
         props.profile.enabled
-          ? "bg-blue-400 hover:bg-blue-200"
-          : "bg-gray-200 hover:bg-gray-400"
+          ? "bg-blue-400"
+          : "bg-gray-200"
       }
-            p-4 rounded-md flex flex-col items-center cursor-pointer
+            hover:-translate-y-1 p-4 rounded-md flex flex-col items-center cursor-pointer
             transition-all duration-200 relative group`}
       onClick={props.onClick}
     >
@@ -25,11 +25,11 @@ export function ProfileCard(props) {
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"
           />
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"
           />
         </svg>
