@@ -130,7 +130,7 @@ export function SelectionModal(props) {
                 </button>
                 <button
                     type="submit"
-                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:w-auto disabled:bg-gray-500"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:mt-0 sm:w-auto disabled:bg-gray-500"
                     onClick={() => props.updateProfiles(selections)}
                     disabled={!valid}
                 >
