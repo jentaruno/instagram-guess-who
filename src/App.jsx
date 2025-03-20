@@ -1,6 +1,7 @@
 import { useState } from "react";
 import findMutualFollowers from "./components/findMutualFollowers.js";
 import { createRoom, joinRoom, validateRoomCode } from "./components/p2p.js";
+import Game from "./components/Game.jsx";
 import { FriendUsernameInputSection } from "./FriendUsernameInputSection.jsx";
 import { CreateJoinRoomSection } from "./CreateJoinRoomSection.jsx";
 
@@ -190,6 +191,7 @@ export default function App() {
           flipModal={flipModal}
           resetAll={resetAll}
           profiles={profiles}
+          toggleCard={toggleCard}
           showModal={showModal}
           updateProfiles={updateProfiles}
           conn={conn}

@@ -11,10 +11,15 @@ export default function Game({
   showModal,
   updateProfiles,
   conn,
+  toggleCard,
 }) {
   return (
     <div className={"m-4 flex flex-col items-start"}>
-      <div className={"mb-4 w-full flex flex-col md:flex-row justify-between items-center"}>
+      <div
+        className={
+          "mb-4 w-full flex flex-col md:flex-row justify-between items-center"
+        }
+      >
         <div className={"flex flex-col md:flex-row md:gap-4 items-center"}>
           <div className={"flex flex-row md:contents mb-2"}>
             <BackButton onClick={returnToMain} />
@@ -29,12 +34,18 @@ export default function Game({
           </p>
         </div>
         <div className={"flex flex-row md:items-center"}>
-          <button className={"mr-4 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"}
+          <button
+            className={
+              "mr-4 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+            }
             onClick={flipModal}
           >
             Select Users
           </button>
-          <button className={"mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"}
+          <button
+            className={
+              "mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+            }
             onClick={resetAll}
           >
             Reset All
@@ -45,7 +56,11 @@ export default function Game({
         {profiles
           .filter((profile) => profile.selected)
           .map((profile, i) => (
-            <ProfileCard key={i} profile={profile} onClick={() => toggleCard(i)} />
+            <ProfileCard
+              key={i}
+              profile={profile}
+              onClick={() => toggleCard(i)}
+            />
           ))}
       </div>
       {showModal && (
