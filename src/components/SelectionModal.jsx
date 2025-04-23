@@ -8,48 +8,52 @@ function ProfileRow({index, profile, isSelected, toggleSelection}) {
           src={profile.profile_pic}
           className="rounded-full object-scale-down max-h-full mr-2"
         />
-        <span>
-          <a
-            className={`text-sm text-left text-white hover:text-white hover:underline line-clamp-1`}
+        <span className="flex flex-col max-w-24">
+        <a
+            className={`text-sm text-left text-white hover:text-white hover:underline truncate`}
             href={`https://instagram.com/${profile.username}`}
             target={"_blank"}
-          >
-            {profile.username}
-          </a>
-          <a
-              className={`text-sm text-left text-white hover:text-white hover:underline line-clamp-1`}
-              href={`https://instagram.com/${profile.username}`}
-              target={"_blank"}
-          >
-            {profile.full_name}
-          </a>
-        </span>
+        >
+          {profile.username}
+        </a>
+        <a
+            className={`text-sm text-left text-white hover:text-white hover:underline truncate`}
+            href={`https://instagram.com/${profile.username}`}
+            target={"_blank"}
+        >
+          {profile.full_name}
+        </a>
+      </span>
         <div className="ml-auto relative">
-          <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={isSelected}
-              onChange={() => toggleSelection(index)}
-          />
-          <svg
-              className={"fill-white absolute top-1/2 transform -translate-y-1/2 right-0 peer-checked:invisible"}
-              width="1.25rem" height="1.25rem" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-            <g>
-              <path fill="none" d="M0 0h24v24H0z"/>
+          <label className="flex items-center cursor-pointer relative">
+            <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => toggleSelection(index)}
+                className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded-full
+                hover:bg-white hover:bg-opacity-50
+                bg-transparent border-2 border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
+                focus:ring-0 focus:ring-offset-0"
+                id="check"
+            />
+            <span
+                className="absolute text-blue-500 opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="1"
+            >
               <path
-                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-            </g>
-          </svg>
-          <svg
-              className={"fill-white absolute top-1/2 transform -translate-y-1/2 bottom-1/2 right-0 invisible peer-hover:visible peer-hover:opacity-50 peer-checked:visible peer-checked:peer-hover:opacity-100"}
-              width="1.25rem" height="1.25rem" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <g>
-              <path fill="none" d="M0 0h24v24H0z"/>
-              <path
-                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/>
-            </g>
-          </svg>
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+              ></path>
+            </svg>
+          </span>
+          </label>
         </div>
       </div>
   );

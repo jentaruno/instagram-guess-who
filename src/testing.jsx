@@ -274,7 +274,7 @@ createRoot(document.getElementById("root")).render(
       returnToMain={() => {}}
       flipModal={() => {}}
       resetAll={() => {}}
-      showModal={false}
+      showModal={true}
       conn={() => {}}
       friend="a"
       profiles={profiles}
