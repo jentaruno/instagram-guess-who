@@ -11,7 +11,7 @@ export function ProfileCard(props) {
       onClick={props.onClick}
     >
       <a
-        className={`absolute top-2 left-2 invisible hover:text-blue-400 group-hover:visible ${
+        className={`absolute top-2 left-2 invisible hover:text-blue-300 group-hover:visible ${
           props.profile.enabled ? "text-white" : "text-black"
         }`}
         href={`https://instagram.com/${props.profile.username}`}
