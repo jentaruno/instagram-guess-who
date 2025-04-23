@@ -156,7 +156,7 @@ export default function App() {
       {status !== 4 ? (
         <div
           className={
-            "m-4 w-full flex flex-col gap-4 items-center justify-center"
+            "w-full flex flex-col gap-4 items-center justify-center"
           }
         >
           <img

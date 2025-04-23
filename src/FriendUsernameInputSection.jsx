@@ -24,7 +24,7 @@ export function FriendUsernameInputSection({
       />
       <button
         className={`${
-          isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
+          isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700 transition-all duration-200"
         } border-none text-lg text-white font-semibold py-2 px-4 rounded`}
         onClick={handleClick}
         disabled={isLoading}

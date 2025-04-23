@@ -61,21 +61,29 @@ export function SelectionModal(props) {
               <div className={"flex flex-row gap-4"}>
                 <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2
+                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-100
+                    border-none hover:border-none hover:bg-gray-200 sm:mt-0 sm:w-auto
+                    transition-all duration-200"
                     onClick={props.flipModal}
                 >
                   Cancel
                 </button>
                 <button
                     type="reset"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2
+                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-100
+                    border-none hover:border-none hover:bg-gray-200 sm:mt-0 sm:w-auto
+                    transition-all duration-200"
                     onClick={resetSelections}
                 >
                   Reset
                 </button>
                 <button
                     type="submit"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:mt-0 sm:w-auto disabled:bg-gray-500"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2
+                    text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:mt-0 sm:w-auto
+                    disabled:bg-gray-500 transition-all duration-200"
                     onClick={() => props.updateProfiles(selections)}
                     disabled={!valid}
                 >
