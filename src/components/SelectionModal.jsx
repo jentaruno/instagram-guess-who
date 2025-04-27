@@ -39,7 +39,7 @@ export function SelectionModal(props) {
           px-4 py-6 sm:p-6 sm:pb-4">
               <h3 className="mb-3 font-semibold" id="modal-title">Select Friends</h3>
               {/* Scrollable Content */}
-              <div className="flex-grow overflow-auto mask-y-from-50% mask-y-to-50%">
+              <div className="flex-grow overflow-auto">
                 <div className="sm:flex sm:items-start pr-1">
                     <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                       {selections.map((isSelected, index) => (
@@ -61,9 +61,9 @@ export function SelectionModal(props) {
               <div className={"flex flex-row gap-4"}>
                 <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2
-                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-100
-                    border-none hover:border-none hover:bg-gray-200 sm:mt-0 sm:w-auto
+                    className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
+                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
+                    border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
                     onClick={props.flipModal}
                 >
@@ -71,9 +71,9 @@ export function SelectionModal(props) {
                 </button>
                 <button
                     type="reset"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2
-                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-100
-                    border-none hover:border-none hover:bg-gray-200 sm:mt-0 sm:w-auto
+                    className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
+                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
+                    border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
                     onClick={resetSelections}
                 >
@@ -81,7 +81,7 @@ export function SelectionModal(props) {
                 </button>
                 <button
                     type="submit"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2
                     text-sm font-semibold text-white shadow-xs hover:bg-blue-500 sm:ml-3 sm:mt-0 sm:w-auto
                     disabled:bg-gray-500 transition-all duration-200"
                     onClick={() => props.updateProfiles(selections)}
