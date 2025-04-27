@@ -1,11 +1,7 @@
 export function ProfileCard(props) {
   return (
     <div
-      className={`${
-        props.profile.enabled
-          ? "bg-blue-400"
-          : "bg-gray-200"
-      }
+      className={`${props.profile.enabled ? "bg-blue-400" : "bg-gray-200"}
             hover:-translate-y-1 p-4 rounded-md flex flex-col items-center cursor-pointer
             transition-all duration-200 relative group`}
       onClick={props.onClick}
@@ -40,14 +36,14 @@ export function ProfileCard(props) {
         className={"rounded-full mb-1"}
       />
       <p
-        className={`text-center ${
+        className={`text-center line-clamp-1 ${
           props.profile.enabled ? "text-white" : "text-black"
         }`}
       >
         {props.profile.username}
       </p>
       <p
-        className={`text-center ${
+        className={`text-center line-clamp-1 ${
           props.profile.enabled ? "text-white" : "text-black"
         }`}
       >

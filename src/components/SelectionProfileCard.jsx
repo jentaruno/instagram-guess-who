@@ -7,7 +7,11 @@ export function SelectionProfileCard({
   return (
     <div
       key={index}
-      className="flex flex-row h-[50px] items-center p-2 bg-blue-500 rounded-md"
+      className={`flex flex-row h-[50px] items-center p-2 rounded-md cursor-pointer ${
+        isSelected
+          ? "bg-blue-500 dark:bg-blue-600"
+          : "bg-gray-300 dark:bg-gray-600"
+      } hover:opacity-90 transition-all`}
       onClick={() => toggleSelection(index)}
     >
       <img
@@ -15,9 +19,13 @@ export function SelectionProfileCard({
         src={profile.profile_pic}
         className="rounded-full object-scale-down max-h-full mr-2"
       />
-      <span className="flex flex-col max-w-24">
+      <span className="flex flex-col sm:max-w-36 md:max-w-24 ">
         <a
-          className={`text-sm text-left text-white hover:text-white hover:underline truncate`}
+          className={`text-sm text-left ${
+            isSelected
+              ? "text-white hover:text-white"
+              : "text-black dark:text-white hover:text-black hover:dark:text-white"
+          } hover:underline truncate`}
           href={`https://instagram.com/${profile.username}`}
           target={"_blank"}
           onClick={(e) => e.stopPropagation()}
@@ -25,7 +33,11 @@ export function SelectionProfileCard({
           {profile.username}
         </a>
         <a
-          className={`text-sm text-left text-white hover:text-white hover:underline truncate`}
+          className={`text-sm text-left ${
+            isSelected
+              ? "text-white hover:text-white"
+              : "text-black dark:text-white hover:text-black hover:dark:text-white"
+          } hover:underline truncate`}
           href={`https://instagram.com/${profile.username}`}
           target={"_blank"}
           onClick={(e) => e.stopPropagation()}
@@ -38,13 +50,13 @@ export function SelectionProfileCard({
           <input
             type="checkbox"
             checked={isSelected}
-            className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded-full
+            className="peer cursor-pointer h-5 w-5 transition-all appearance-none rounded-full
                 hover:bg-white hover:bg-opacity-50
-                bg-transparent border-2 border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
+                bg-transparent border-2 border-gray-400 checked:border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
                 focus:ring-0 focus:ring-offset-0"
             id="check"
           />
-          <span className="absolute text-blue-500 opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+          <span className="absolute text-blue-500 dark:text-blue-600 opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-3.5 w-3.5"
