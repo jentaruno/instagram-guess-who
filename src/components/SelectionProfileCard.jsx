@@ -10,7 +10,7 @@ export function SelectionProfileCard({
       className={`flex flex-row h-[50px] items-center p-2 rounded-md cursor-pointer ${
         isSelected
           ? "bg-blue-500 dark:bg-blue-600"
-          : "bg-gray-300 dark:bg-gray-600"
+          : "bg-gray-300 dark:bg-gray-500"
       } hover:opacity-90 transition-all`}
       onClick={() => toggleSelection(index)}
     >
