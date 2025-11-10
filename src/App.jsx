@@ -155,9 +155,7 @@ export default function App() {
     <>
       {status !== 4 ? (
         <div
-          className={
-            "w-full flex flex-col gap-4 items-center justify-center"
-          }
+          className={"w-full flex flex-col gap-4 items-center justify-center"}
         >
           <img
             alt={"Instagram Guess Who Logo"}
@@ -179,10 +177,10 @@ export default function App() {
                 handleJoinRoom={handleJoinRoom}
                 roomCode={roomCode}
                 setFriendRoomCode={setFriendRoomCode}
+                error={error}
               />
             )}
           </div>
-          {error && <p className="text-red-500">{error}</p>}
         </div>
       ) : (
         <Game

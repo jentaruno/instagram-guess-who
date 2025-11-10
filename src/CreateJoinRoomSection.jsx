@@ -6,6 +6,7 @@ export function CreateJoinRoomSection({
   handleJoinRoom,
   roomCode,
   setFriendRoomCode,
+  error,
 }) {
   return (
     <div className={"flex flex-row items-start gap-4"}>
@@ -41,6 +42,7 @@ export function CreateJoinRoomSection({
         >
           {!isLoading ? "Join" : "Joining..."}
         </button>
+        {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
     </div>
   );

@@ -52,7 +52,11 @@ export default function Game({
           </button>
         </div>
       </div>
-      <div className={"grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4"}>
+      <div
+        className={
+          "grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4"
+        }
+      >
         {profiles
           .filter((profile) => profile.selected)
           .map((profile, i) => (
