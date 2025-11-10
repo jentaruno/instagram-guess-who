@@ -33,6 +33,22 @@ async function imageUrlToBase64(url) {
   });
 }
 
+async function getOwnUsername() {
+  try {
+    return fetch("https://www.instagram.com/accounts/edit/", {
+      credentials: "include",
+    })
+      .then((response) => response.text())
+      .then((text) => {
+        return text.match(/"username":"(.*?)"/)?.[1];
+      });
+  } catch (err) {
+    const e = new Error(`Error while getting own username: ${err.message}`);
+    e.name = errorName;
+    throw e;
+  }
+}
+
 // adapted from https://stackoverflow.com/a/74133719
 async function getMutuals(username) {
   try {
@@ -41,9 +57,10 @@ async function getMutuals(username) {
     const userQueryRes = await fetch(
       `https://www.instagram.com/web/search/topsearch/?query=${username}`
     );
+    const ownUsername = await getOwnUsername();
 
     const userQueryJson = await userQueryRes.json();
-
+    console.log(userQueryJson);
     let searchedUsers;
     let userId;
     try {
@@ -94,6 +111,7 @@ async function getMutuals(username) {
     );
 
     console.log(mutualFollowers);
+    /*
 
     // get friend's following
     // initialized like this so it still runs in browsers, but also still has intellisense
@@ -119,6 +137,7 @@ async function getMutuals(username) {
       )
         .then((res) => res.json())
         .then((res) => {
+          console.log(res);
           has_next = res.data.user.edge_follow.page_info.has_next_page;
           after = res.data.user.edge_follow.page_info.end_cursor;
           followings = followings.concat(
@@ -144,8 +163,15 @@ async function getMutuals(username) {
     });
     console.log(filteredMutuals);
 
+    */
+
     // send extension filtered mutuals from the page
-    browser.runtime.sendMessage({ type: "mutuals", mutuals: filteredMutuals });
+    browser.runtime.sendMessage({
+      type: "mutuals",
+      // mutuals: filteredMutuals,
+      mutuals: mutualFollowers,
+      username: ownUsername,
+    });
 
     console.log("Done with getting mutuals!");
   } catch (err) {
