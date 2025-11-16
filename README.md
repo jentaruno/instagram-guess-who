@@ -29,9 +29,12 @@ Join room flow:
 - if connection closed, start game.
 
 ## Build
+To build for each platform, update the manifest specified in `vite.config.js` and then run:
 
 ```bash
 npm run build
 ```
+
+Build *should* create a zip file of the dist folder `igw_build.zip` appropriately formatted for upload to web extension stores.
 
 Add it to Chrome/Firefox extension, TODO link instructions

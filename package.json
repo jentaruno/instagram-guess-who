@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cd dist && zip -FSX -r ../igw_build.zip ./*",
     "lint": "eslint .",
     "preview": "vite preview"
   },
