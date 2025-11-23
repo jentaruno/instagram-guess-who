@@ -109,6 +109,7 @@ async function getMutuals(username) {
         }
       )
     );
+    mutualFollowers.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
     console.log(mutualFollowers);
     /*
