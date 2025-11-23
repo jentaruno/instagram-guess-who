@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { ProfileCard } from "./ProfileCard.jsx";
 import { SelectionModal } from "./SelectionModal.jsx";
 import { BackButton } from "./BackButton.jsx";
+import { HelpModal } from "./HelpModal.jsx";
 
 export default function Game({
   friend,
@@ -13,6 +15,9 @@ export default function Game({
   conn,
   toggleCard,
 }) {
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const flipHelpModal = () => setShowHelpModal(!showHelpModal);
+
   return (
     <div className={"m-4 flex flex-col items-start"}>
       <div
@@ -33,10 +38,19 @@ export default function Game({
             Playing with {friend}
           </p>
         </div>
-        <div className={"flex flex-row md:items-center"}>
+        <div className={"flex flex-row gap-4 md:items-center"}>
+          <button
+                className={"p-0 border-none focus:outline-none bg-transparent"}
+                onClick={flipHelpModal}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                </svg>
+            </button>
           <button
             className={
-              "mr-4 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+              "w-24 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
             }
             onClick={flipModal}
           >
@@ -44,7 +58,7 @@ export default function Game({
           </button>
           <button
             className={
-              "mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+              "w-24 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
             }
             onClick={resetAll}
           >
@@ -77,6 +91,9 @@ export default function Game({
           }}
           flipModal={flipModal}
         />
+      )}
+      {showHelpModal && (
+        <HelpModal hideModal={() => setShowHelpModal(false)} />
       )}
     </div>
   );
