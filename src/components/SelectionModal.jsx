@@ -7,6 +7,19 @@ export function SelectionModal(props) {
   );
   const [valid, setValid] = useState(true);
 
+  function randomizeSelections() {
+    setSelections((prevSelections) => {
+      let currentIndex = prevSelections.length;
+      while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [prevSelections[currentIndex], prevSelections[randomIndex]] = [
+          prevSelections[randomIndex], prevSelections[currentIndex]];
+        return prevSelections.map((_, index) => index < 24);
+      }
+    });
+  }
+
   // reset selections to default
   function resetSelections() {
     setSelections((prevSelections) =>
@@ -23,6 +36,7 @@ export function SelectionModal(props) {
     const newValid = newSelections.filter(Boolean).length <= 24;
     setValid(newValid);
   }
+  
   return (
     <div
       className="relative z-10"
@@ -73,6 +87,15 @@ export function SelectionModal(props) {
                 onClick={props.hideModal}
               >
                 Cancel
+              </button>
+              <button
+                className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
+                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
+                    border-none hover:border-none sm:mt-0 sm:w-auto
+                    transition-all duration-200"
+                onClick={randomizeSelections}
+              >
+                Randomize
               </button>
               <button
                 type="reset"
