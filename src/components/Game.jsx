@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ProfileCard } from "./ProfileCard.jsx";
 import { SelectionModal } from "./SelectionModal.jsx";
 import { BackButton } from "./BackButton.jsx";
@@ -5,14 +6,14 @@ import { BackButton } from "./BackButton.jsx";
 export default function Game({
   friend,
   returnToMain,
-  flipModal,
   resetAll,
   profiles,
-  showModal,
   updateProfiles,
   conn,
   toggleCard,
 }) {
+  const [showSelectionModal, setShowSelectionModal] = useState(false);
+
   return (
     <div className={"m-4 flex flex-col items-start"}>
       <div
@@ -38,7 +39,7 @@ export default function Game({
             className={
               "mr-4 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
             }
-            onClick={flipModal}
+            onClick={() => setShowSelectionModal(true)}
           >
             Select Users
           </button>
@@ -67,15 +68,15 @@ export default function Game({
             />
           ))}
       </div>
-      {showModal && (
+      {showSelectionModal && (
         <SelectionModal
           profiles={profiles}
           updateProfiles={(selections) => {
             updateProfiles(selections);
-            flipModal();
+            setShowSelectionModal(false);
             conn.send(selections);
           }}
-          flipModal={flipModal}
+          hideModal={() => setShowSelectionModal(false)}
         />
       )}
     </div>

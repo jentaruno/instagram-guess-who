@@ -17,7 +17,6 @@ export default function App() {
   // 4 = game start
   const [status, setStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
   const [peer, setPeer] = useState();
   const [conn, setConn] = useState();
@@ -66,10 +65,6 @@ export default function App() {
       returnToMain,
       handleP2PError
     );
-  }
-
-  function flipModal() {
-    setShowModal(!showModal);
   }
 
   function handleError(data) {
@@ -186,11 +181,9 @@ export default function App() {
         <Game
           friend={friend}
           returnToMain={returnToMain}
-          flipModal={flipModal}
           resetAll={resetAll}
           profiles={profiles}
           toggleCard={toggleCard}
-          showModal={showModal}
           updateProfiles={updateProfiles}
           conn={conn}
         />

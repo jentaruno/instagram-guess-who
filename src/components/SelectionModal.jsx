@@ -70,7 +70,7 @@ export function SelectionModal(props) {
                     text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
                     border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
-                onClick={props.flipModal}
+                onClick={props.hideModal}
               >
                 Cancel
               </button>
