@@ -32,8 +32,8 @@ export function HelpModal({ hideModal }) {
           <ol className="text-md list-decimal ml-6">
               <li>If you want to choose a different set of mutual followers, click Select Users and choose the followers you want on the board.</li>
               <li>Each player secretly chooses a person on the board.</li>
-              <li>Players take turns asking yes/no questions to deduce who the other person chose.
-                  As you do this, you'll rule out some followers. Click on a follower's card to disable it and take them off the possible choices.</li>
+              <li>Take turns asking yes/no questions to deduce who the other person chose.
+                  As you do this, you can click on a follower's card to disable it and take it off the possible choices.</li>
               <li>If you think you know who the other player chose, make a guess! Note that this counts as a turn. The first player to guess correctly wins.</li>
               <li>Click Reset All to reset the board if you want to play a new game.</li>
           </ol>
