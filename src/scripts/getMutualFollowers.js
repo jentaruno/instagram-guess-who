@@ -58,6 +58,12 @@ async function getMutuals(username) {
       `https://www.instagram.com/web/search/topsearch/?query=${username}`
     );
     const ownUsername = await getOwnUsername();
+    if (username === ownUsername) {
+      // throw error for trying your own username
+      const e = new Error("Enter a friend's Instagram username, not your own.");
+      e.name = errorName;
+      throw e;
+    }
 
     const userQueryJson = await userQueryRes.json();
     console.log(userQueryJson);
