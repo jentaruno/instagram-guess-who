@@ -138,7 +138,6 @@ export default function App() {
     setError("");
     setRoomCode("");
     setFriendRoomCode("");
-    setShowModal(false);
     setStatus(0);
     setUsername("");
     setFriend("");
