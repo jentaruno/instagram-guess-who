@@ -7,6 +7,19 @@ export function SelectionModal(props) {
   );
   const [valid, setValid] = useState(true);
 
+  function randomizeSelections() {
+    setSelections((prevSelections) => {
+      let currentIndex = prevSelections.length;
+      while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [prevSelections[currentIndex], prevSelections[randomIndex]] = [
+          prevSelections[randomIndex], prevSelections[currentIndex]];
+        return prevSelections.map((_, index) => index < 24);
+      }
+    });
+  }
+
   // reset selections to default
   function resetSelections() {
     setSelections((prevSelections) =>
@@ -23,6 +36,7 @@ export function SelectionModal(props) {
     const newValid = newSelections.filter(Boolean).length <= 24;
     setValid(newValid);
   }
+  
   return (
     <div
       className="relative z-10"
@@ -39,9 +53,19 @@ export function SelectionModal(props) {
           className="relative w-5/6 h-5/6 max-w-2xl rounded-xl shadow-xl bg-white dark:bg-gray-800 flex flex-col
           px-4 py-6 sm:p-6 sm:pb-4"
         >
-          <h3 className="mb-3 font-semibold" id="modal-title">
-            Select Friends
-          </h3>
+          <div className="flex flex-row w-full justify-between items-center mb-4">
+            <h3 className="font-semibold">
+                Select Friends
+            </h3>
+            <button
+                className={"p-0 border-none focus:outline-none bg-transparent"}
+                onClick={props.hideModal}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </button>
+          </div>
           {/* Scrollable Content */}
           <div className="flex-grow overflow-auto">
             <div className="sm:flex sm:items-start pr-1">
@@ -65,14 +89,13 @@ export function SelectionModal(props) {
             </p>
             <div className={"flex flex-row gap-4"}>
               <button
-                type="button"
                 className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
                     text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
                     border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
-                onClick={props.hideModal}
+                onClick={randomizeSelections}
               >
-                Cancel
+                Randomize
               </button>
               <button
                 type="reset"
