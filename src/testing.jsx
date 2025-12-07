@@ -276,9 +276,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Game
       returnToMain={() => {}}
-      flipModal={() => {}}
       resetAll={() => {}}
-      showModal={true}
       conn={() => {}}
       friend="a"
       profiles={profiles}
