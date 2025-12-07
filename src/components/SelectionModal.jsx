@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { SelectionProfileCard } from "./SelectionProfileCard.jsx";
 
+const DEFAULT_NUM_SELECTIONS = 24;
+
 export function SelectionModal(props) {
   const [selections, setSelections] = useState(
     props.profiles.map((profile) => profile.selected)
@@ -9,21 +11,19 @@ export function SelectionModal(props) {
 
   function randomizeSelections() {
     setSelections((prevSelections) => {
-      let currentIndex = prevSelections.length;
-      while (currentIndex != 0) {
-        let randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [prevSelections[currentIndex], prevSelections[randomIndex]] = [
-          prevSelections[randomIndex], prevSelections[currentIndex]];
-        return prevSelections.map((_, index) => index < 24);
+      let selected = new Set([]);
+      while (selected.size < Math.min(DEFAULT_NUM_SELECTIONS, prevSelections.length)) {
+        let randomIndex = Math.floor(Math.random() * (prevSelections.length));
+        selected.add(randomIndex);
       }
+      return prevSelections.map((_, index) => selected.has(index));
     });
   }
 
   // reset selections to default
   function resetSelections() {
     setSelections((prevSelections) =>
-      prevSelections.map((_, index) => index < 24)
+      prevSelections.map((_, index) => index < DEFAULT_NUM_SELECTIONS)
     );
   }
 
@@ -32,8 +32,8 @@ export function SelectionModal(props) {
       i === index ? !selected : selected
     );
     setSelections(newSelections);
-    // disable Done button if the new length is over 24
-    const newValid = newSelections.filter(Boolean).length <= 24;
+    // disable Done button if the new length is over default
+    const newValid = newSelections.filter(Boolean).length <= DEFAULT_NUM_SELECTIONS;
     setValid(newValid);
   }
   
