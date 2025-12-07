@@ -138,7 +138,6 @@ export default function App() {
     setError("");
     setRoomCode("");
     setFriendRoomCode("");
-    setShowModal(false);
     setStatus(0);
     setUsername("");
     setFriend("");
@@ -163,6 +162,7 @@ export default function App() {
                 isLoading={isLoading}
                 setFriend={setFriend}
                 handleClick={handleClick}
+                error={error}
               />
             )}
             {status === 1 && (
