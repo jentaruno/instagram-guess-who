@@ -23,6 +23,7 @@ browser.runtime.onMessage.addListener((data) => {
 
 async function imageUrlToBase64(url) {
   const response = await fetch(url);
+  console.log(response);
   const blob = await response.blob();
   return new Promise((onSuccess) => {
     const reader = new FileReader();
@@ -115,7 +116,18 @@ async function getMutuals(username) {
         }
       )
     );
-    mutualFollowers.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    mutualFollowers.sort((a, b) => {
+      const nameA = a.username.toUpperCase(); // Ignore case for comparison
+      const nameB = b.username.toUpperCase();
+
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
 
     console.log(mutualFollowers);
     /*
