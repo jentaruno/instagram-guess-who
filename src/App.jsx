@@ -163,6 +163,7 @@ export default function App() {
                 isLoading={isLoading}
                 setFriend={setFriend}
                 handleClick={handleClick}
+                error={error}
               />
             )}
             {status === 1 && (
