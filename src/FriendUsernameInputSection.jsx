@@ -2,6 +2,7 @@ export function FriendUsernameInputSection({
   isLoading,
   setFriend,
   handleClick,
+  error,
 }) {
   return (
     <div className={"flex flex-col items-center"}>
@@ -35,6 +36,7 @@ export function FriendUsernameInputSection({
       >
         {!isLoading ? "Launch" : "Loading..."}
       </button>
+      {error && <p className="mt-4 text-red-500">{error}</p>}
       <br />
       Instagram Guess Who is independently developed, and is not affiliated with
       or endorsed or sponsored by Instagram, Facebook, or Meta.
