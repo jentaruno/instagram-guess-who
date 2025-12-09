@@ -16,7 +16,7 @@ export function HelpModal({ hideModal }) {
           px-4 py-6 sm:p-6 sm:pb-4"
         >
           <div className="flex flex-row w-full justify-between items-center mb-4">
-            <h3 className="font-semibold">
+            <h3 className="text-lg font-semibold">
                 How to Play
             </h3>
             <button
@@ -28,15 +28,29 @@ export function HelpModal({ hideModal }) {
                 </svg>
             </button>
           </div>
-          <p className="mb-3 text-md">Instagram Guess Who is a two-player game where each player tries to guess the other player's chosen Instagram user from a shared pool of mutual followers.</p>
-          <ol className="text-md list-decimal ml-6">
-              <li>If you want to choose a different set of mutual followers, click Select Users and choose the followers you want on the board.</li>
-              <li>Each player secretly chooses a person on the board.</li>
-              <li>Take turns asking yes/no questions to deduce who the other person chose.
-                  As you do this, you can click on a follower's card to disable it and take it off the possible choices.</li>
-              <li>If you think you know who the other player chose, make a guess! Note that this counts as a turn. The first player to guess correctly wins.</li>
-              <li>Click Reset All to reset the board if you want to play a new game.</li>
-          </ol>
+          <div className="flex-grow overflow-auto mb-6 pr-2">
+            <p className="mb-3 text-lg">Instagram Guess Who is a two-player game where each player tries to guess the other player's chosen Instagram user from a shared pool of mutual followers.</p>
+            <ol className="text-lg list-decimal ml-6 space-y-3">
+                <li>If you want to choose a different set of mutual followers, click Select Users and choose the followers you want on the board.
+                  <img
+                    alt={"Tutorial for selecting followers"}
+                    src={"./tutorial-select.gif"}
+                    className={"w-full my-2 pr-6"}
+                  />
+                </li>
+                <li>Each player secretly chooses a person on the board.</li>
+                <li>Take turns asking yes/no questions to deduce who the other person chose.
+                    As you do this, you can click on a follower's card to disable it and take it off the possible choices.
+                  <img
+                    alt={"Tutorial for eliminating follower cards"}
+                    src={"./tutorial-eliminate.gif"}
+                    className={"w-full my-2 pr-6"}
+                  />
+                </li>
+                <li>If you think you know who the other player chose, make a guess! Note that this counts as a turn. The first player to guess correctly wins.</li>
+                <li>Click Reset All to reset the board if you want to play a new game.</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
