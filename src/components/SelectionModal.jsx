@@ -10,22 +10,26 @@ export function SelectionModal(props) {
   const [valid, setValid] = useState(true);
 
   function randomizeSelections() {
-    setSelections((prevSelections) => {
-      if (prevSelections.length <= DEFAULT_NUM_SELECTIONS)
-        return prevSelections.map((_) => true);
-      
-      let selected = new Set([]);
-      while (selected.size < DEFAULT_NUM_SELECTIONS) {
-        let randomIndex = Math.floor(Math.random() * (prevSelections.length));
-        selected.add(randomIndex);
-      }
-      return prevSelections.map((_, index) => selected.has(index));
-    });
+    if (selections.length <= DEFAULT_NUM_SELECTIONS) {
+      setSelections((prevSelections) => prevSelections.map((_) => true));
+      validateSelections(newSelections);
+      return;
+    }
+
+    let selected = new Set([]);
+    while (selected.size < DEFAULT_NUM_SELECTIONS) {
+      let randomIndex = Math.floor(Math.random() * (selections.length));
+      selected.add(randomIndex);
+    }
+    const newSelections = selections.map((_, index) => selected.has(index));
+    setSelections(newSelections);
+    validateSelections(newSelections);
   }
 
-  // clear selections
   function clearSelections() {
-    setSelections((prevSelections) => prevSelections.map((_) => false));
+    const newSelections = selections.map((_) => false);
+    setSelections(newSelections);
+    validateSelections(newSelections);
   }
 
   function toggleSelection(index) {
@@ -33,9 +37,14 @@ export function SelectionModal(props) {
       i === index ? !selected : selected
     );
     setSelections(newSelections);
-    // disable Done button if the new length is over default
-    const newValid = newSelections.filter(Boolean).length <= DEFAULT_NUM_SELECTIONS;
-    setValid(newValid);
+    validateSelections(newSelections);
+  }
+
+  function validateSelections(selectionList) {
+    const minSelections = Math.min(DEFAULT_NUM_SELECTIONS, selectionList.length);
+    const numSelections = selectionList.filter(Boolean).length;
+    const isValid = numSelections >= minSelections && numSelections <= DEFAULT_NUM_SELECTIONS;
+    setValid(isValid);
   }
   
   return (
