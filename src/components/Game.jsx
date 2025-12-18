@@ -3,6 +3,7 @@ import { ProfileCard } from "./ProfileCard.jsx";
 import { SelectionModal } from "./SelectionModal.jsx";
 import { BackButton } from "./BackButton.jsx";
 import { HelpModal } from "./HelpModal.jsx";
+import { QuestionModal } from "./QuestionModal.jsx";
 
 export default function Game({
   friend,
@@ -13,8 +14,8 @@ export default function Game({
   conn,
   toggleCard,
 }) {
+  const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const flipHelpModal = () => setShowHelpModal(!showHelpModal);
   const [showSelectionModal, setShowSelectionModal] = useState(false);
 
   return (
@@ -40,7 +41,7 @@ export default function Game({
         <div className={"flex flex-row gap-4 md:items-center"}>
           <button
             className={"p-0 border-none focus:outline-none bg-transparent"}
-            onClick={flipHelpModal}
+            onClick={() => setShowHelpModal(true)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -61,6 +62,14 @@ export default function Game({
             onClick={() => setShowSelectionModal(true)}
           >
             Select Users
+          </button>
+          <button
+            className={
+              "w-24 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
+            }
+            onClick={() => setShowQuestionModal(true)}
+          >
+            Random Question
           </button>
           <button
             className={
@@ -98,6 +107,7 @@ export default function Game({
           hideModal={() => setShowSelectionModal(false)}
         />
       )}
+      {showQuestionModal && <QuestionModal hideModal={() => setShowQuestionModal(false)} />}
       {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
     </div>
   );
