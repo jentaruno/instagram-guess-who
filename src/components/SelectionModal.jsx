@@ -20,11 +20,9 @@ export function SelectionModal(props) {
     });
   }
 
-  // reset selections to default
-  function resetSelections() {
-    setSelections((prevSelections) =>
-      prevSelections.map((_, index) => index < DEFAULT_NUM_SELECTIONS)
-    );
+  // clear selections
+  function clearSelections() {
+    setSelections((prevSelections) => prevSelections.map((_) => false));
   }
 
   function toggleSelection(index) {
@@ -98,14 +96,13 @@ export function SelectionModal(props) {
                 Randomize
               </button>
               <button
-                type="reset"
                 className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
                     text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
                     border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
-                onClick={resetSelections}
+                onClick={clearSelections}
               >
-                Reset
+                Clear
               </button>
               <button
                 type="submit"
