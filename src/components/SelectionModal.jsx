@@ -11,8 +11,11 @@ export function SelectionModal(props) {
 
   function randomizeSelections() {
     setSelections((prevSelections) => {
+      if (prevSelections.length <= DEFAULT_NUM_SELECTIONS)
+        return prevSelections.map((_) => true);
+      
       let selected = new Set([]);
-      while (selected.size < Math.min(DEFAULT_NUM_SELECTIONS, prevSelections.length)) {
+      while (selected.size < DEFAULT_NUM_SELECTIONS) {
         let randomIndex = Math.floor(Math.random() * (prevSelections.length));
         selected.add(randomIndex);
       }
