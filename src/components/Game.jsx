@@ -29,7 +29,10 @@ export default function Game({
             />
           </div>
           <p className={"mb-1 ml-2 text-lg text-gray-400"}>
-            Playing with {friend}
+            Playing with{" "}
+            <a href={"https://instagram.com/" + friend} target="_blank">
+              {friend}
+            </a>
           </p>
         </div>
         <GameMenuBar

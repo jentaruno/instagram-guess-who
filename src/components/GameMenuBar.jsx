@@ -90,7 +90,7 @@ export default function GameMenuBar({
               }}
             >
               <LiaUserEditSolid size={24} />
-              Select Users
+              Select Followers
             </a>
             <a
               className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
