@@ -4,7 +4,7 @@ import { HelpModal } from "./modals/HelpModal.jsx";
 import { QuestionModal } from "./modals/QuestionModal.jsx";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { TbMessageQuestion, TbReload, TbUserQuestion } from "react-icons/tb";
-import { BsQuestionCircle } from "react-icons/bs";
+import { BsQuestionCircle, BsThreeDots } from "react-icons/bs";
 import { RandomFollowerModal } from "./modals/RandomFollowerModal.jsx";
 import { AiOutlineFullscreen } from "react-icons/ai";
 
@@ -35,6 +35,7 @@ export default function GameMenuBar({
 
   const fullscreenButton = (
     <button
+      title="Toggle Fullscreen"
       className={
         "p-0 border-none focus:outline-none bg-transparent hover:scale-110 transition-all duration-200"
       }
@@ -47,6 +48,7 @@ export default function GameMenuBar({
 
   const randomQuestionButton = (
     <button
+      title="Random Question"
       className={
         "p-0 border-none focus:outline-none bg-transparent hover:scale-110 transition-all duration-200"
       }
@@ -59,6 +61,7 @@ export default function GameMenuBar({
 
   const helpButton = (
     <button
+      title="Help"
       className={
         "p-0 border-none focus:outline-none bg-transparent hover:scale-110 transition-all duration-200"
       }
@@ -72,6 +75,7 @@ export default function GameMenuBar({
   const showMoreButton = (
     <div className="relative inline-block" ref={menuRef}>
       <button
+        title="More"
         className={
           "p-0 border-none focus:outline-none bg-transparent align-middle hover:scale-110 transition-all duration-200"
         }
@@ -80,16 +84,7 @@ export default function GameMenuBar({
         aria-expanded={showMoreMenu}
         aria-label="More"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="currentColor"
-          className="bi bi-three-dots"
-          viewBox="0 0 16 16"
-        >
-          <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
-        </svg>
+        <BsThreeDots size={24} />
       </button>
       {showMoreMenu && (
         <div

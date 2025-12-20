@@ -1,4 +1,6 @@
+import { TbMessageQuestion, TbReload, TbUserQuestion } from "react-icons/tb";
 import { BaseModal } from "./BaseModal.jsx";
+import { BsThreeDots } from "react-icons/bs";
 
 export function HelpModal({ hideModal }) {
   return (
@@ -21,12 +23,29 @@ export function HelpModal({ hideModal }) {
               className={"w-full my-2 pr-6"}
             />
           </li>
-          <li>Each player secretly chooses a person on the board.</li>
+          <li>
+            <p>
+              Each player secretly chooses a person on the board. If you want to
+              do this randomly, click{" "}
+              <BsThreeDots size={24} className="inline -translate-y-[1px]" />{" "}
+              More, then
+              <TbUserQuestion
+                size={24}
+                className="inline -translate-y-[1px]"
+              />{" "}
+              Random Follower.
+            </p>
+          </li>
           <li>
             Take turns asking yes/no questions to deduce who the other person
-            chose. When answering questions, you can say yes/no/unsure. To help
-            deduce, you can click on a follower's card to disable it and take it
-            off the possible choices.
+            chose. If you need question ideas, click{" "}
+            <TbMessageQuestion
+              size={24}
+              className="inline -translate-y-[1px]"
+            />{" "}
+            for random questions. When answering questions, you can say
+            yes/no/unsure. To help deduce, you can click on a follower's card to
+            disable it and take it off the possible choices.
             <img
               alt={"Tutorial for eliminating follower cards"}
               src={"./tutorial-eliminate.gif"}
@@ -39,7 +58,11 @@ export function HelpModal({ hideModal }) {
             wins.
           </li>
           <li>
-            Click Reset All to reset the board if you want to play a new game.
+            To play a new game, click{" "}
+            <BsThreeDots size={24} className="inline -translate-y-[1px]" />{" "}
+            More, then{" "}
+            <TbReload size={24} className="inline -translate-y-[1px]" /> Reset
+            All to reset the board.
           </li>
         </ol>
       </div>
