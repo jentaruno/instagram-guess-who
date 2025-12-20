@@ -11,6 +11,12 @@ export default function Game({
   conn,
   toggleCard,
 }) {
+  const toggleFullscreen = () => {
+    const video = document.documentElement;
+    if (!document.fullscreenElement) video.requestFullscreen();
+    else document.exitFullscreen?.();
+  };
+
   return (
     <div className={"m-4 flex flex-col items-start"}>
       <div
@@ -20,7 +26,12 @@ export default function Game({
       >
         <div className={"flex flex-col md:flex-row md:gap-4 items-center"}>
           <div className={"flex flex-row md:contents mb-2"}>
-            <BackButton onClick={() => returnToMain()} />
+            <BackButton
+              onClick={() => {
+                returnToMain();
+                document.exitFullscreen?.();
+              }}
+            />
             <img
               alt={"Instagram Guess Who Logo"}
               src={"./logo-oneline.png"}
@@ -39,6 +50,7 @@ export default function Game({
           updateProfiles={updateProfiles}
           conn={conn}
           resetAll={resetAll}
+          toggleFullscreen={toggleFullscreen}
         />
       </div>
       <div

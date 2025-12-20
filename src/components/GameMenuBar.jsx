@@ -6,12 +6,14 @@ import { LiaUserEditSolid } from "react-icons/lia";
 import { TbMessageQuestion, TbReload, TbUserQuestion } from "react-icons/tb";
 import { BsQuestionCircle } from "react-icons/bs";
 import { RandomFollowerModal } from "./modals/RandomFollowerModal.jsx";
+import { AiOutlineFullscreen } from "react-icons/ai";
 
 export default function GameMenuBar({
   profiles,
   updateProfiles,
   conn,
   resetAll,
+  toggleFullscreen,
 }) {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showQuestionModal, setShowQuestionModal] = useState(false);
@@ -31,28 +33,34 @@ export default function GameMenuBar({
     return () => document.removeEventListener("pointerdown", handleClickAway);
   }, []);
 
+  const fullscreenButton = (
+    <button
+      className={"p-0 border-none focus:outline-none bg-transparent"}
+      onClick={toggleFullscreen}
+      aria-label="Toggle Fullscreen"
+    >
+      <AiOutlineFullscreen size={24} />
+    </button>
+  );
+
   const randomQuestionButton = (
-    <>
-      <button
-        className={"p-0 border-none focus:outline-none bg-transparent"}
-        onClick={() => setShowQuestionModal(true)}
-        aria-label="Random Question"
-      >
-        <TbMessageQuestion size={24} />
-      </button>
-    </>
+    <button
+      className={"p-0 border-none focus:outline-none bg-transparent"}
+      onClick={() => setShowQuestionModal(true)}
+      aria-label="Random Question"
+    >
+      <TbMessageQuestion size={24} />
+    </button>
   );
 
   const helpButton = (
-    <>
-      <button
-        className={"p-0 border-none focus:outline-none bg-transparent"}
-        onClick={() => setShowHelpModal(true)}
-        aria-label="Help"
-      >
-        <BsQuestionCircle size={24} />
-      </button>
-    </>
+    <button
+      className={"p-0 border-none focus:outline-none bg-transparent"}
+      onClick={() => setShowHelpModal(true)}
+      aria-label="Help"
+    >
+      <BsQuestionCircle size={24} />
+    </button>
   );
 
   const showMoreButton = (
@@ -125,6 +133,7 @@ export default function GameMenuBar({
   return (
     <div className="relative">
       <div className={"flex flex-row gap-4 md:items-center"}>
+        {fullscreenButton}
         {randomQuestionButton}
         {helpButton}
         {showMoreButton}
