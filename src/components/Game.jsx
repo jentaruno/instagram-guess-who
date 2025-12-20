@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProfileCard } from "./ProfileCard.jsx";
 import { SelectionModal } from "./SelectionModal.jsx";
 import { BackButton } from "./BackButton.jsx";
@@ -21,9 +21,21 @@ export default function Game({
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showSelectionModal, setShowSelectionModal] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickAway = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMoreMenu(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleClickAway);
+    return () => document.removeEventListener("pointerdown", handleClickAway);
+  }, []);
 
   const showMoreButton = (
-    <div className="relative inline-block">
+    <div className="relative inline-block" ref={menuRef}>
       <button
         className={"p-0 border-none focus:outline-none bg-transparent"}
         onClick={() => setShowMoreMenu(!showMoreMenu)}
@@ -33,7 +45,7 @@ export default function Game({
           width="24"
           height="24"
           fill="currentColor"
-          class="bi bi-three-dots"
+          className="bi bi-three-dots"
           viewBox="0 0 16 16"
         >
           <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
@@ -49,6 +61,10 @@ export default function Game({
             <a
               className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
               role="menuitem"
+              onClick={() => {
+                setShowSelectionModal(true);
+                setShowMoreMenu(false);
+              }}
             >
               <LiaUserEditSolid size={24} />
               Select Users
@@ -56,6 +72,10 @@ export default function Game({
             <a
               className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
               role="menuitem"
+              onClick={() => {
+                setShowQuestionModal(true);
+                setShowMoreMenu(false);
+              }}
             >
               <PiDiceThree size={24} />
               Random Question
@@ -63,6 +83,10 @@ export default function Game({
             <a
               className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
               role="menuitem"
+              onClick={() => {
+                resetAll();
+                setShowMoreMenu(false);
+              }}
             >
               <TbReload size={24} />
               Reset All
@@ -70,6 +94,21 @@ export default function Game({
           </div>
         </div>
       )}
+      {showSelectionModal && (
+        <SelectionModal
+          profiles={profiles}
+          updateProfiles={(selections) => {
+            updateProfiles(selections);
+            setShowSelectionModal(false);
+            conn.send(selections);
+          }}
+          hideModal={() => setShowSelectionModal(false)}
+        />
+      )}
+      {showQuestionModal && (
+        <QuestionModal hideModal={() => setShowQuestionModal(false)} />
+      )}
+      {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
     </div>
   );
 
@@ -111,30 +150,6 @@ export default function Game({
               <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
             </svg>
           </button>
-          <button
-            className={
-              "w-24 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
-            }
-            onClick={() => setShowSelectionModal(true)}
-          >
-            Select Users
-          </button>
-          <button
-            className={
-              "w-24 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
-            }
-            onClick={() => setShowQuestionModal(true)}
-          >
-            Random Question
-          </button>
-          <button
-            className={
-              "w-24 mb-2 bg-gray-200 hover:bg-gray-300 border-none text-[1rem] text-black"
-            }
-            onClick={resetAll}
-          >
-            Reset All
-          </button>
         </div>
       </div>
       <div
@@ -152,21 +167,6 @@ export default function Game({
             />
           ))}
       </div>
-      {showSelectionModal && (
-        <SelectionModal
-          profiles={profiles}
-          updateProfiles={(selections) => {
-            updateProfiles(selections);
-            setShowSelectionModal(false);
-            conn.send(selections);
-          }}
-          hideModal={() => setShowSelectionModal(false)}
-        />
-      )}
-      {showQuestionModal && (
-        <QuestionModal hideModal={() => setShowQuestionModal(false)} />
-      )}
-      {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
     </div>
   );
 }
