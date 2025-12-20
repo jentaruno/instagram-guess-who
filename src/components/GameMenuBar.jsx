@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { SelectionModal } from "./SelectionModal.jsx";
-import { HelpModal } from "./HelpModal.jsx";
-import { QuestionModal } from "./QuestionModal.jsx";
+import { SelectionModal } from "./modals/SelectionModal.jsx";
+import { HelpModal } from "./modals/HelpModal.jsx";
+import { QuestionModal } from "./modals/QuestionModal.jsx";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { TbDice3, TbReload } from "react-icons/tb";
 import { BsQuestionCircle } from "react-icons/bs";

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ProfileCard } from "./ProfileCard.jsx";
 import { BackButton } from "./BackButton.jsx";
 import GameMenuBar from "./GameMenuBar.jsx";
@@ -21,7 +20,7 @@ export default function Game({
       >
         <div className={"flex flex-col md:flex-row md:gap-4 items-center"}>
           <div className={"flex flex-row md:contents mb-2"}>
-            <BackButton onClick={returnToMain} />
+            <BackButton onClick={() => returnToMain()} />
             <img
               alt={"Instagram Guess Who Logo"}
               src={"./logo-oneline.png"}

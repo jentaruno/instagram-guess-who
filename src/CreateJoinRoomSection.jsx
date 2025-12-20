@@ -10,7 +10,7 @@ export function CreateJoinRoomSection({
 }) {
   return (
     <div className={"flex flex-row items-start gap-4"}>
-      <BackButton onClick={handleBack} />
+      <BackButton onClick={() => handleBack()} />
       <div className={"flex flex-col items-center"}>
         <p className={"text-lg"}>Have your friend join:</p>
         <h2 className={"text-3xl font-bold mb-4"}>{roomCode}</h2>

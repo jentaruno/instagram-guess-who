@@ -133,9 +133,9 @@ export default function App() {
     );
   }
 
-  function returnToMain() {
+  function returnToMain(errorMsg) {
     disconnectPeer();
-    setError("");
+    errorMsg && setError(errorMsg);
     setRoomCode("");
     setFriendRoomCode("");
     setStatus(0);

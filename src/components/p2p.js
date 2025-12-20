@@ -1,4 +1,5 @@
 import { Peer } from "peerjs";
+import { randomize } from "./selectionUtils";
 /*
 HELPERS
 */
@@ -52,12 +53,10 @@ function validate(data, friend, roomCode) {
   );
 }
 
-function setFirstMutuals(data, setProfiles) {
-  setProfiles((prevProfiles) => {
-    const filteredProfiles = prevProfiles.filter((p) => data.includes(p.id));
-    return filteredProfiles.map((profile, i) => {
-      return { ...profile, selected: i < 24, enabled: true };
-    });
+function filterFirstMutuals(data, profiles) {
+  const filteredProfiles = profiles.filter((p) => data.includes(p.id));
+  return filteredProfiles.map((profile, i) => {
+    return { ...profile, selected: i < 24, enabled: true };
   });
 }
 
@@ -135,9 +134,23 @@ export async function createRoom(
           }
           case "mutuals": {
             // receive mutuals data, determine intersection
-            setFirstMutuals(data, setProfiles);
-            // send mutuals back
-            conn.send(profiles.map((p) => p.id));
+            const filteredProfiles = filterFirstMutuals(data, profiles);
+            // randomly select from mutuals and send back
+            const randomSelections = randomize(
+              filteredProfiles.map((p) => p.selected)
+            );
+            const randomProfiles = filteredProfiles.map((p, i) => ({
+              ...p,
+              selected: randomSelections[i],
+            }));
+            setProfiles(randomProfiles);
+            // send selected subset back to peer
+            conn.send(
+              filteredProfiles.map((p, i) => ({
+                id: p.id,
+                selected: randomSelections[i],
+              }))
+            );
             stage = "confirmation";
             break;
           }
@@ -163,7 +176,7 @@ export async function createRoom(
       conn.on("close", () => {
         handleConnClose(stage, handleError);
         if (stage === "playing") {
-          returnToMain();
+          returnToMain("Connection terminated.");
         }
       });
     });
@@ -235,7 +248,14 @@ export async function joinRoom(
 
           case "mutuals": {
             // update profiles with mutuals data
-            setFirstMutuals(data, setProfiles);
+            const ids = data.map((p) => p.id);
+            const filteredMutuals = filterFirstMutuals(ids, profiles);
+            // select the same selected subset as in data
+            const randomProfiles = filteredMutuals.map((p) => {
+              const selection = data.find((d) => d.id === p.id).selected;
+              return { ...p, selected: selection };
+            });
+            setProfiles(randomProfiles);
             // send confirmation
             stage = "playing";
             conn.send("confirmation");
@@ -257,7 +277,7 @@ export async function joinRoom(
       conn.on("close", () => {
         handleConnClose(stage, handleError);
         if (stage === "playing") {
-          returnToMain();
+          returnToMain("Connection terminated.");
         }
       });
     });

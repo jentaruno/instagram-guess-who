@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { BaseModal } from "./BaseModal.jsx";
 import { SelectionProfileCard } from "../SelectionProfileCard.jsx";
-
-const DEFAULT_NUM_SELECTIONS = 24;
+import { validate, randomize } from "../selectionUtils.js";
 
 export function SelectionModal(props) {
   const [selections, setSelections] = useState(
@@ -11,18 +10,7 @@ export function SelectionModal(props) {
   const [valid, setValid] = useState(true);
 
   function randomizeSelections() {
-    if (selections.length <= DEFAULT_NUM_SELECTIONS) {
-      setSelections((prevSelections) => prevSelections.map((_) => true));
-      validateSelections(newSelections);
-      return;
-    }
-
-    let selected = new Set([]);
-    while (selected.size < DEFAULT_NUM_SELECTIONS) {
-      let randomIndex = Math.floor(Math.random() * selections.length);
-      selected.add(randomIndex);
-    }
-    const newSelections = selections.map((_, index) => selected.has(index));
+    const newSelections = randomize(selections);
     setSelections(newSelections);
     validateSelections(newSelections);
   }
@@ -42,14 +30,7 @@ export function SelectionModal(props) {
   }
 
   function validateSelections(selectionList) {
-    const minSelections = Math.min(
-      DEFAULT_NUM_SELECTIONS,
-      selectionList.length
-    );
-    const numSelections = selectionList.filter(Boolean).length;
-    const isValid =
-      numSelections >= minSelections && numSelections <= DEFAULT_NUM_SELECTIONS;
-    setValid(isValid);
+    setValid(validate(selectionList));
   }
 
   return (
