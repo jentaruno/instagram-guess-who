@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { SelectionProfileCard } from "./SelectionProfileCard.jsx";
-
-const DEFAULT_NUM_SELECTIONS = 24;
+import { validate, randomize } from "./selectionUtils.js";
 
 export function SelectionModal(props) {
   const [selections, setSelections] = useState(
@@ -10,18 +9,7 @@ export function SelectionModal(props) {
   const [valid, setValid] = useState(true);
 
   function randomizeSelections() {
-    if (selections.length <= DEFAULT_NUM_SELECTIONS) {
-      setSelections((prevSelections) => prevSelections.map((_) => true));
-      validateSelections(newSelections);
-      return;
-    }
-
-    let selected = new Set([]);
-    while (selected.size < DEFAULT_NUM_SELECTIONS) {
-      let randomIndex = Math.floor(Math.random() * (selections.length));
-      selected.add(randomIndex);
-    }
-    const newSelections = selections.map((_, index) => selected.has(index));
+    const newSelections = randomize(selections);
     setSelections(newSelections);
     validateSelections(newSelections);
   }
@@ -41,12 +29,9 @@ export function SelectionModal(props) {
   }
 
   function validateSelections(selectionList) {
-    const minSelections = Math.min(DEFAULT_NUM_SELECTIONS, selectionList.length);
-    const numSelections = selectionList.filter(Boolean).length;
-    const isValid = numSelections >= minSelections && numSelections <= DEFAULT_NUM_SELECTIONS;
-    setValid(isValid);
+    setValid(validate(selectionList));
   }
-  
+
   return (
     <div
       className="relative z-10"
@@ -64,16 +49,21 @@ export function SelectionModal(props) {
           px-4 py-6 sm:p-6 sm:pb-4"
         >
           <div className="flex flex-row w-full justify-between items-center mb-4">
-            <h3 className="font-semibold">
-                Select Friends
-            </h3>
+            <h3 className="font-semibold">Select Friends</h3>
             <button
-                className={"p-0 border-none focus:outline-none bg-transparent"}
-                onClick={props.hideModal}
+              className={"p-0 border-none focus:outline-none bg-transparent"}
+              onClick={props.hideModal}
             >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-x"
+                viewBox="0 0 16 16"
+              >
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+              </svg>
             </button>
           </div>
           {/* Scrollable Content */}
