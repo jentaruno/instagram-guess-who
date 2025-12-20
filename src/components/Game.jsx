@@ -27,7 +27,7 @@ export default function Game({
       >
         <div className={"flex flex-col md:flex-row md:gap-4 items-center"}>
           <div className={"flex flex-row md:contents mb-2"}>
-            <BackButton onClick={returnToMain} />
+            <BackButton onClick={() => returnToMain()} />
             <img
               alt={"Instagram Guess Who Logo"}
               src={"./logo-oneline.png"}
@@ -107,7 +107,9 @@ export default function Game({
           hideModal={() => setShowSelectionModal(false)}
         />
       )}
-      {showQuestionModal && <QuestionModal hideModal={() => setShowQuestionModal(false)} />}
+      {showQuestionModal && (
+        <QuestionModal hideModal={() => setShowQuestionModal(false)} />
+      )}
       {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
     </div>
   );

@@ -176,7 +176,7 @@ export async function createRoom(
       conn.on("close", () => {
         handleConnClose(stage, handleError);
         if (stage === "playing") {
-          returnToMain();
+          returnToMain("Connection terminated.");
         }
       });
     });
@@ -277,7 +277,7 @@ export async function joinRoom(
       conn.on("close", () => {
         handleConnClose(stage, handleError);
         if (stage === "playing") {
-          returnToMain();
+          returnToMain("Connection terminated.");
         }
       });
     });
