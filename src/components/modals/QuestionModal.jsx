@@ -15,7 +15,7 @@ export function QuestionModal({ hideModal }) {
     setRandomQuestion((prev) => getRandom(questions, prev));
 
   const [randomQuestion, setRandomQuestion] = useState(() =>
-    getRandom(questions)
+    getRandom(questions.Basic)
   );
 
   return (
@@ -33,16 +33,21 @@ export function QuestionModal({ hideModal }) {
           <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m8 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
         </svg>
         <p className={"text-lg"}>{randomQuestion}</p>
-        <button
-          type="button"
-          onClick={rollQuestion}
-          className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
+        <div className="flex flex-col md:flex-row gap-2 items-center">
+          {Object.entries(questions).map(([category, qs]) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setRandomQuestion(getRandom(qs, randomQuestion))}
+              className="inline-flex justify-center rounded-md px-3 py-2
                 text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
-                border-none hover:border-none sm:mt-0 sm:w-auto
+                border-none hover:border-none
                 transition-all duration-200"
-        >
-          <span className="text-lg font-medium">New Question</span>
-        </button>
+            >
+              <span className="text-lg font-medium">{category}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </BaseModal>
   );
