@@ -7,6 +7,7 @@ import { QuestionModal } from "./QuestionModal.jsx";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { PiDiceThree } from "react-icons/pi";
 import { TbReload } from "react-icons/tb";
+import { BsQuestionCircle } from "react-icons/bs";
 
 export default function Game({
   friend,
@@ -37,7 +38,9 @@ export default function Game({
   const showMoreButton = (
     <div className="relative inline-block" ref={menuRef}>
       <button
-        className={"p-0 border-none focus:outline-none bg-transparent"}
+        className={
+          "p-0 border-none focus:outline-none bg-transparent align-middle"
+        }
         onClick={() => setShowMoreMenu(!showMoreMenu)}
       >
         <svg
@@ -108,8 +111,19 @@ export default function Game({
       {showQuestionModal && (
         <QuestionModal hideModal={() => setShowQuestionModal(false)} />
       )}
-      {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
     </div>
+  );
+
+  const helpButton = (
+    <>
+      <button
+        className={"p-0 border-none focus:outline-none bg-transparent"}
+        onClick={() => setShowHelpModal(true)}
+      >
+        <BsQuestionCircle size={24} />
+      </button>
+      {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
+    </>
   );
 
   return (
@@ -125,7 +139,7 @@ export default function Game({
             <img
               alt={"Instagram Guess Who Logo"}
               src={"./logo-oneline.png"}
-              className={"w-5/6 ml-2 md:ml-0 md:w-1/2"}
+              className={"h-16 ml-2 md:ml-0"}
             />
           </div>
           <p className={"mb-1 ml-2 text-lg text-gray-400"}>
@@ -134,22 +148,7 @@ export default function Game({
         </div>
         <div className={"flex flex-row gap-4 md:items-center"}>
           {showMoreButton}
-          <button
-            className={"p-0 border-none focus:outline-none bg-transparent"}
-            onClick={() => setShowHelpModal(true)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              fill="currentColor"
-              class="bi bi-question-circle"
-              viewBox="0 0 16 16"
-            >
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
-            </svg>
-          </button>
+          {helpButton}
         </div>
       </div>
       <div
