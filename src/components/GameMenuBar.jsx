@@ -3,8 +3,9 @@ import { SelectionModal } from "./modals/SelectionModal.jsx";
 import { HelpModal } from "./modals/HelpModal.jsx";
 import { QuestionModal } from "./modals/QuestionModal.jsx";
 import { LiaUserEditSolid } from "react-icons/lia";
-import { TbDice3, TbReload } from "react-icons/tb";
+import { TbMessageQuestion, TbReload, TbUserQuestion } from "react-icons/tb";
 import { BsQuestionCircle } from "react-icons/bs";
+import { RandomFollowerModal } from "./modals/RandomFollowerModal.jsx";
 
 export default function GameMenuBar({
   profiles,
@@ -16,6 +17,7 @@ export default function GameMenuBar({
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showSelectionModal, setShowSelectionModal] = useState(false);
+  const [showRandomFollowerModal, setShowRandomFollowerModal] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function GameMenuBar({
         onClick={() => setShowQuestionModal(true)}
         aria-label="Random Question"
       >
-        <TbDice3 size={24} />
+        <TbMessageQuestion size={24} />
       </button>
     </>
   );
@@ -96,6 +98,17 @@ export default function GameMenuBar({
               className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
               role="menuitem"
               onClick={() => {
+                setShowRandomFollowerModal(true);
+                setShowMoreMenu(false);
+              }}
+            >
+              <TbUserQuestion size={24} />
+              Random Follower
+            </a>
+            <a
+              className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
+              role="menuitem"
+              onClick={() => {
                 resetAll();
                 setShowMoreMenu(false);
               }}
@@ -129,6 +142,12 @@ export default function GameMenuBar({
             conn.send(selections);
           }}
           hideModal={() => setShowSelectionModal(false)}
+        />
+      )}
+      {showRandomFollowerModal && (
+        <RandomFollowerModal
+          profiles={profiles.filter((profile) => profile.selected)}
+          hideModal={() => setShowRandomFollowerModal(false)}
         />
       )}
     </div>
