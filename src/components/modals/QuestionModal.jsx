@@ -40,7 +40,7 @@ export function QuestionModal({ hideModal }) {
               type="button"
               onClick={() => setRandomQuestion(getRandom(qs, randomQuestion))}
               className="inline-flex justify-center rounded-md px-3 py-2
-                text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
+                text-sm font-semibold text-neutral-900 shadow-xs bg-neutral-200 hover:bg-neutral-300
                 border-none hover:border-none
                 transition-all duration-200"
             >

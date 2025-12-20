@@ -35,7 +35,9 @@ export default function GameMenuBar({
 
   const fullscreenButton = (
     <button
-      className={"p-0 border-none focus:outline-none bg-transparent"}
+      className={
+        "p-0 border-none focus:outline-none bg-transparent hover:scale-110 transition-all duration-200"
+      }
       onClick={toggleFullscreen}
       aria-label="Toggle Fullscreen"
     >
@@ -45,7 +47,9 @@ export default function GameMenuBar({
 
   const randomQuestionButton = (
     <button
-      className={"p-0 border-none focus:outline-none bg-transparent"}
+      className={
+        "p-0 border-none focus:outline-none bg-transparent hover:scale-110 transition-all duration-200"
+      }
       onClick={() => setShowQuestionModal(true)}
       aria-label="Random Question"
     >
@@ -55,7 +59,9 @@ export default function GameMenuBar({
 
   const helpButton = (
     <button
-      className={"p-0 border-none focus:outline-none bg-transparent"}
+      className={
+        "p-0 border-none focus:outline-none bg-transparent hover:scale-110 transition-all duration-200"
+      }
       onClick={() => setShowHelpModal(true)}
       aria-label="Help"
     >
@@ -67,7 +73,7 @@ export default function GameMenuBar({
     <div className="relative inline-block" ref={menuRef}>
       <button
         className={
-          "p-0 border-none focus:outline-none bg-transparent align-middle"
+          "p-0 border-none focus:outline-none bg-transparent align-middle hover:scale-110 transition-all duration-200"
         }
         onClick={() => setShowMoreMenu(!showMoreMenu)}
         aria-haspopup="menu"
@@ -87,12 +93,12 @@ export default function GameMenuBar({
       </button>
       {showMoreMenu && (
         <div
-          className="origin-top-right absolute right-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 focus:outline-none"
+          className="origin-top-right absolute right-0 z-10 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-neutral-700 focus:outline-none"
           role="menu"
         >
-          <div className="py-1" role="none">
+          <div className="p-2" role="none">
             <a
-              className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
+              className="flex flex-row gap-2 block p-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white hover:bg-neutral-600 rounded-md"
               role="menuitem"
               onClick={() => {
                 setShowSelectionModal(true);
@@ -103,7 +109,7 @@ export default function GameMenuBar({
               Select Followers
             </a>
             <a
-              className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
+              className="flex flex-row gap-2 block p-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white hover:bg-neutral-600 rounded-md"
               role="menuitem"
               onClick={() => {
                 setShowRandomFollowerModal(true);
@@ -114,7 +120,7 @@ export default function GameMenuBar({
               Random Follower
             </a>
             <a
-              className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
+              className="flex flex-row gap-2 block p-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white hover:bg-neutral-600 rounded-md"
               role="menuitem"
               onClick={() => {
                 resetAll();

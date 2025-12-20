@@ -56,14 +56,14 @@ export function SelectionModal(props) {
       </div>
 
       {/* Footer Buttons (Sticky) */}
-      <div className="bg-white dark:bg-gray-800 rounded-b-xl pt-3 pb-1 sm:flex sm:flex-row flex-shrink-0 items-center justify-between">
+      <div className="bg-white dark:bg-neutral-800 rounded-b-xl pt-3 pb-1 sm:flex sm:flex-row flex-shrink-0 items-center justify-between">
         <p className={valid ? "" : "text-red-500"}>
           {selections.filter(Boolean).length + "/24 selected"}
         </p>
         <div className={"flex flex-row gap-4"}>
           <button
             className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
-                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
+                    text-sm font-semibold text-neutral-900 shadow-xs bg-neutral-200 hover:bg-neutral-300
                     border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
             onClick={randomizeSelections}
@@ -72,7 +72,7 @@ export function SelectionModal(props) {
           </button>
           <button
             className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2
-                    text-sm font-semibold text-gray-900 shadow-xs bg-gray-200 hover:bg-gray-300
+                    text-sm font-semibold text-neutral-900 shadow-xs bg-neutral-200 hover:bg-neutral-300
                     border-none hover:border-none sm:mt-0 sm:w-auto
                     transition-all duration-200"
             onClick={clearSelections}
@@ -83,7 +83,7 @@ export function SelectionModal(props) {
             type="submit"
             className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-500 dark:bg-blue-600 hover:opacity-90 px-3 py-2
                     text-sm font-semibold text-white shadow-xs sm:mt-0 sm:w-auto hover:border-none border-none
-                    disabled:bg-gray-500 transition-all duration-200"
+                    disabled:bg-neutral-500 transition-all duration-200"
             onClick={() => props.updateProfiles(selections)}
             disabled={!valid}
           >

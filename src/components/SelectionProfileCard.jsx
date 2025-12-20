@@ -10,7 +10,7 @@ export function SelectionProfileCard({
       className={`flex flex-row h-[50px] items-center p-2 rounded-md cursor-pointer ${
         isSelected
           ? "bg-blue-500 dark:bg-blue-600"
-          : "bg-gray-300 dark:bg-gray-500"
+          : "bg-neutral-300 dark:bg-neutral-500"
       } hover:opacity-90 transition-all`}
       onClick={() => toggleSelection(index)}
     >
@@ -52,7 +52,7 @@ export function SelectionProfileCard({
             checked={isSelected}
             className="peer cursor-pointer h-5 w-5 transition-all appearance-none rounded-full
                 hover:bg-white hover:bg-opacity-50
-                bg-transparent border-2 border-gray-400 checked:border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
+                bg-transparent border-2 border-neutral-400 checked:border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
                 focus:ring-0 focus:ring-offset-0"
             id="check"
           />

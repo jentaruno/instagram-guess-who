@@ -10,7 +10,7 @@ export function FriendUsernameInputSection({
       <input
         placeholder="user.name (no @)"
         className={
-          "mb-4 px-4 py-2 text-lg text-black bg-gray-200 rounded-md focus:outline-none"
+          "mb-4 px-4 py-2 text-lg text-black bg-neutral-200 rounded-md focus:outline-none"
         }
         type="text"
         onChange={(event) => {

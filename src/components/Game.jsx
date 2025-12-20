@@ -38,7 +38,7 @@ export default function Game({
               className={"h-16 ml-2 md:ml-0"}
             />
           </div>
-          <p className={"mb-1 ml-2 text-lg text-gray-400"}>
+          <p className={"mb-1 ml-2 text-lg text-neutral-400"}>
             Playing with{" "}
             <a href={"https://instagram.com/" + friend} target="_blank">
               {friend}

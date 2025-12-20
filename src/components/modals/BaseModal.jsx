@@ -27,13 +27,13 @@ export function BaseModal({ title, hideModal, children, size = "default" }) {
       aria-modal="true"
     >
       <div
-        className="fixed inset-0 bg-gray-500/75 transition-opacity"
+        className="fixed inset-0 bg-neutral-500/75 transition-opacity"
         aria-hidden="true"
       ></div>
       <div className="fixed inset-0 z-10 flex items-center justify-center">
         <div
           ref={modalRef}
-          className={`relative ${sizeClasses[size]} rounded-xl shadow-xl bg-white dark:bg-gray-800 flex flex-col px-4 py-6 sm:p-6 sm:pb-4`}
+          className={`relative ${sizeClasses[size]} rounded-xl shadow-xl bg-white dark:bg-neutral-800 flex flex-col px-4 py-6 sm:p-6 sm:pb-4`}
         >
           <div className="flex flex-row w-full justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">{title}</h3>
