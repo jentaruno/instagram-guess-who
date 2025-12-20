@@ -17,7 +17,11 @@ export default async function handleClick(
       handleError(message);
     }, duration);
   }
-  let timeout = newTimeout(10000, getMutuals, "Instagram tab timed out");
+  let timeout = newTimeout(
+    10000,
+    getMutuals,
+    "Instagram tab timed out. Please wait a few seconds and try again."
+  );
   function getMutuals(request, sender) {
     if (request.type !== "ready" || sender.tab.id !== tab.id) return;
     console.log("instagram tab ready");
