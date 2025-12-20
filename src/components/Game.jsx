@@ -5,8 +5,7 @@ import { BackButton } from "./BackButton.jsx";
 import { HelpModal } from "./HelpModal.jsx";
 import { QuestionModal } from "./QuestionModal.jsx";
 import { LiaUserEditSolid } from "react-icons/lia";
-import { PiDiceThree } from "react-icons/pi";
-import { TbReload } from "react-icons/tb";
+import { TbDice3, TbReload } from "react-icons/tb";
 import { BsQuestionCircle } from "react-icons/bs";
 
 export default function Game({
@@ -34,6 +33,32 @@ export default function Game({
     document.addEventListener("pointerdown", handleClickAway);
     return () => document.removeEventListener("pointerdown", handleClickAway);
   }, []);
+
+  const randomQuestionButton = (
+    <>
+      <button
+        className={"p-0 border-none focus:outline-none bg-transparent"}
+        onClick={() => setShowQuestionModal(true)}
+      >
+        <TbDice3 size={24} />
+      </button>
+      {showQuestionModal && (
+        <QuestionModal hideModal={() => setShowQuestionModal(false)} />
+      )}
+    </>
+  );
+
+  const helpButton = (
+    <>
+      <button
+        className={"p-0 border-none focus:outline-none bg-transparent"}
+        onClick={() => setShowHelpModal(true)}
+      >
+        <BsQuestionCircle size={24} />
+      </button>
+      {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
+    </>
+  );
 
   const showMoreButton = (
     <div className="relative inline-block" ref={menuRef}>
@@ -76,17 +101,6 @@ export default function Game({
               className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
               role="menuitem"
               onClick={() => {
-                setShowQuestionModal(true);
-                setShowMoreMenu(false);
-              }}
-            >
-              <PiDiceThree size={24} />
-              Random Question
-            </a>
-            <a
-              className="flex flex-row gap-2 block px-4 py-2 cursor-pointer text-black dark:text-white hover:text-black dark:hover:text-white"
-              role="menuitem"
-              onClick={() => {
                 resetAll();
                 setShowMoreMenu(false);
               }}
@@ -108,22 +122,7 @@ export default function Game({
           hideModal={() => setShowSelectionModal(false)}
         />
       )}
-      {showQuestionModal && (
-        <QuestionModal hideModal={() => setShowQuestionModal(false)} />
-      )}
     </div>
-  );
-
-  const helpButton = (
-    <>
-      <button
-        className={"p-0 border-none focus:outline-none bg-transparent"}
-        onClick={() => setShowHelpModal(true)}
-      >
-        <BsQuestionCircle size={24} />
-      </button>
-      {showHelpModal && <HelpModal hideModal={() => setShowHelpModal(false)} />}
-    </>
   );
 
   return (
@@ -147,8 +146,9 @@ export default function Game({
           </p>
         </div>
         <div className={"flex flex-row gap-4 md:items-center"}>
-          {showMoreButton}
+          {randomQuestionButton}
           {helpButton}
+          {showMoreButton}
         </div>
       </div>
       <div
