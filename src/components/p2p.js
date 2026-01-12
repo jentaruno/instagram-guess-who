@@ -1,5 +1,6 @@
 import { Peer } from "peerjs";
 import { randomize } from "./selectionUtils";
+import celebs from "../data/celebs.json";
 /*
 HELPERS
 */
@@ -75,6 +76,7 @@ ROOM JOIN LOGIC
 export async function createRoom(
   profiles,
   setProfiles,
+  setButtonText,
   username,
   friend,
   setStatus,
@@ -87,7 +89,13 @@ export async function createRoom(
 ) {
   function _handleErr(err) {
     console.log({ err });
-    handleError(`${err.name}: ${err.message}`);
+    if (err.type === "timeout") {
+      handleError(
+        "Error: Connection timed out. Your (or your friend's) WiFi may be blocking P2P connections. Try again on a different network?"
+      );
+    } else {
+      handleError(`${err.name}: ${err.message}`);
+    }
   }
   // create room code and get ids
   const roomCode = generateRoomCode();
@@ -109,8 +117,12 @@ export async function createRoom(
 
     // fired upon receiving connection, validate connection
     peer.on("connection", (conn) => {
+      setButtonText("Friend connecting...");
       setConn(conn);
       // if connection does not match expected id, close connection
+      const connectionTimeout = setTimeout(() => {
+        _handleErr({ type: "timeout" });
+      }, 10000);
       console.log(conn.peer);
       if (conn.peer !== friendId) conn.close();
       let stage = "validate";
@@ -158,6 +170,16 @@ export async function createRoom(
           case "confirmation":
             if (data === "confirmation") {
               // receipt confirmation, start game
+              // append celebrity profiles to profiles
+              setProfiles((prevProfiles) => [
+                ...prevProfiles,
+                ...celebs.profiles.map((c) => ({
+                  ...c,
+                  isCeleb: true,
+                })),
+              ]);
+              clearTimeout(connectionTimeout);
+              setButtonText("Join");
               setStatus(4);
               stage = "playing";
             }
@@ -174,6 +196,8 @@ export async function createRoom(
         }
       });
       conn.on("close", () => {
+        setButtonText("Join");
+        clearTimeout(connectionTimeout);
         handleConnClose(stage, handleError);
         if (stage === "playing") {
           returnToMain("Connection terminated.");
@@ -183,6 +207,9 @@ export async function createRoom(
     // fired if peer encounters error
     peer.on("error", _handleErr);
   } catch (err) {
+    setButtonText("Join");
+    // eslint-disable-next-line no-undef
+    connectionTimeout && clearTimeout(connectionTimeout);
     _handleErr(err);
   }
 }
@@ -213,12 +240,19 @@ export async function joinRoom(
     console.log({ err });
     if (err.type === "peer-unavailable") {
       handleError("Error: Could not connect. Is the room code correct?");
+    } else if (err.type === "timeout") {
+      handleError(
+        "Error: Connection timed out. Your (or your friend's) WiFi may be blocking P2P connections. Try again on a different network?"
+      );
     } else {
       handleError(`${err.name}: ${err.message}`);
     }
     peer.destroy();
     setPeer();
   }
+  const connectionTimeout = setTimeout(() => {
+    _handleErr({ type: "timeout" });
+  }, 10000);
   try {
     peer.on("open", (id) => {
       console.log("My peer ID is: " + id);
@@ -255,10 +289,18 @@ export async function joinRoom(
               const selection = data.find((d) => d.id === p.id).selected;
               return { ...p, selected: selection };
             });
+            // append celebrity profiles to profiles
+            randomProfiles.push(
+              ...celebs.profiles.map((c) => ({
+                ...c,
+                isCeleb: true,
+              }))
+            );
             setProfiles(randomProfiles);
             // send confirmation
             stage = "playing";
             conn.send("confirmation");
+            clearTimeout(connectionTimeout);
             // start game
             setStatus(4);
             break;
@@ -275,6 +317,7 @@ export async function joinRoom(
         }
       });
       conn.on("close", () => {
+        clearTimeout(connectionTimeout);
         handleConnClose(stage, handleError);
         if (stage === "playing") {
           returnToMain("Connection terminated.");
@@ -284,6 +327,7 @@ export async function joinRoom(
     // fired when peer encounters error
     peer.on("error", _handleErr);
   } catch (err) {
+    clearTimeout(connectionTimeout);
     _handleErr(err);
   }
 }

@@ -6,7 +6,6 @@ export function SelectionProfileCard({
 }) {
   return (
     <div
-      key={index}
       className={`flex flex-row h-[50px] items-center p-2 rounded-md cursor-pointer ${
         isSelected
           ? "bg-blue-500 dark:bg-blue-600"
@@ -55,6 +54,7 @@ export function SelectionProfileCard({
                 bg-transparent border-2 border-neutral-400 checked:border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
                 focus:ring-0 focus:ring-offset-0"
             id="check"
+            readOnly
           />
           <span className="absolute text-blue-500 dark:text-blue-600 opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
             <svg

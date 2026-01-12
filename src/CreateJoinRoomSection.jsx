@@ -1,7 +1,7 @@
 import { BackButton } from "./components/BackButton.jsx";
 
 export function CreateJoinRoomSection({
-  isLoading,
+  buttonText,
   handleBack,
   handleJoinRoom,
   roomCode,
@@ -29,18 +29,20 @@ export function CreateJoinRoomSection({
               handleJoinRoom();
             }
           }}
-          disabled={isLoading}
+          disabled={buttonText !== "Join"}
         />
         <button
           className={`text-lg ${
-            isLoading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-700"
+            buttonText == "Join"
+              ? "bg-blue-500 hover:bg-blue-700"
+              : "bg-blue-300"
           } 
                               border-none text-white font-semibold py-2 px-4 rounded`}
           onClick={handleJoinRoom}
-          disabled={isLoading}
+          disabled={buttonText !== "Join"}
           type="submit"
         >
-          {!isLoading ? "Join" : "Joining..."}
+          {buttonText}
         </button>
         {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
