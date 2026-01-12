@@ -55,6 +55,7 @@ export function SelectionProfileCard({
                 bg-transparent border-2 border-neutral-400 checked:border-white checked:bg-white checked:focus:bg-white checked:hover:bg-white
                 focus:ring-0 focus:ring-offset-0"
             id="check"
+            readOnly
           />
           <span className="absolute text-blue-500 dark:text-blue-600 opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
             <svg
