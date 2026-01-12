@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { BaseModal } from "./BaseModal.jsx";
 import { SelectionProfileCard } from "../SelectionProfileCard.jsx";
-import { validate, randomize } from "../selectionUtils.js";
+import {
+  validate,
+  randomize,
+  DEFAULT_NUM_SELECTIONS,
+} from "../selectionUtils.js";
 
 export function SelectionModal(props) {
   const [celebTab, setCelebTab] = useState(false);
@@ -10,10 +14,13 @@ export function SelectionModal(props) {
   );
   const [valid, setValid] = useState(true);
 
-  const numToRandomize = selections.filter(
-    (_, index) =>
-      selections[index] && (props.profiles[index].isCeleb || false) === celebTab
-  ).length;
+  const numToRandomize =
+    DEFAULT_NUM_SELECTIONS -
+    selections.filter(
+      (_, index) =>
+        selections[index] &&
+        (!props.profiles[index].isCeleb || false) === celebTab
+    ).length;
 
   function randomizeSelections() {
     const newSelections = randomize(selections, numToRandomize, celebTab);
@@ -45,12 +52,12 @@ export function SelectionModal(props) {
 
   return (
     <BaseModal title="Select Users" hideModal={props.hideModal} size="large">
-      <div class="text-sm font-medium text-center text-body border-b border-neutral-600 mb-4">
-        <ul class="flex flex-wrap">
-          <li class="me-2">
+      <div className="text-sm font-medium text-center text-body border-b border-neutral-600 mb-4">
+        <ul className="flex flex-wrap">
+          <li className="me-2">
             <a
               href="#"
-              class={`inline-block px-4 py-2 rounded-t-base active cursor-pointer no-underline ${
+              className={`inline-block px-4 py-2 rounded-t-base active cursor-pointer no-underline ${
                 celebTab
                   ? "text-neutral-400 hover:text-neutral-400"
                   : "border-b border-white text-white hover:text-white"
@@ -60,10 +67,10 @@ export function SelectionModal(props) {
               Followers
             </a>
           </li>
-          <li class="me-2">
+          <li className="me-2">
             <a
               href="#"
-              class={`inline-block px-4 py-2 rounded-t-base active cursor-pointer no-underline ${
+              className={`inline-block px-4 py-2 rounded-t-base active cursor-pointer no-underline ${
                 celebTab
                   ? "border-b border-white text-white hover:text-white"
                   : "text-neutral-400 hover:text-neutral-400"
