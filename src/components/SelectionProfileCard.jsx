@@ -6,7 +6,6 @@ export function SelectionProfileCard({
 }) {
   return (
     <div
-      key={index}
       className={`flex flex-row h-[50px] items-center p-2 rounded-md cursor-pointer ${
         isSelected
           ? "bg-blue-500 dark:bg-blue-600"

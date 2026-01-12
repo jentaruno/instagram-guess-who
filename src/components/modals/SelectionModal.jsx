@@ -61,6 +61,7 @@ export function SelectionModal(props) {
             {selections
               .map((isSelected, index) => (
                 <SelectionProfileCard
+                  key={index}
                   index={index}
                   profile={props.profiles[index]}
                   isSelected={isSelected}
