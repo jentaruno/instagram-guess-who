@@ -17,6 +17,7 @@ export default function App() {
   // 4 = game start
   const [status, setStatus] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [buttonText, setButtonText] = useState("Join");
   const [error, setError] = useState("");
   const [peer, setPeer] = useState();
   const [conn, setConn] = useState();
@@ -33,6 +34,7 @@ export default function App() {
     createRoom(
       mutuals,
       setProfiles,
+      setButtonText,
       username,
       friend,
       setStatus,
@@ -51,7 +53,7 @@ export default function App() {
       return;
     }
     disconnectPeer();
-    setIsLoading(true);
+    setButtonText("Joining...");
     joinRoom(
       profiles,
       setProfiles,
@@ -69,6 +71,7 @@ export default function App() {
 
   function handleError(data) {
     setIsLoading(false);
+    setButtonText("Join");
     setError(data);
   }
 
@@ -103,6 +106,7 @@ export default function App() {
     setProfiles(mutuals);
     setError("");
     setIsLoading(false);
+    setButtonText("Join");
     handleCreateRoom(mutuals, username);
     setStatus(1);
   }
@@ -141,6 +145,7 @@ export default function App() {
     setFriend("");
     setProfiles([]);
     setIsLoading(false);
+    setButtonText("Join");
   }
 
   return (
@@ -165,7 +170,7 @@ export default function App() {
             )}
             {status === 1 && (
               <CreateJoinRoomSection
-                isLoading={isLoading}
+                buttonText={buttonText}
                 handleBack={returnToMain}
                 handleJoinRoom={handleJoinRoom}
                 roomCode={roomCode}
