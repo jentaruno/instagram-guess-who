@@ -14,6 +14,14 @@ export function SelectionModal(props) {
   );
   const [valid, setValid] = useState(true);
 
+  const numSelectedFollowers = selections.filter(
+    (_, index) => selections[index] && !props.profiles[index].isCeleb
+  ).length;
+
+  const numSelectedCelebrities = selections.filter(
+    (_, index) => selections[index] && props.profiles[index].isCeleb
+  ).length;
+
   const numToRandomize =
     DEFAULT_NUM_SELECTIONS -
     selections.filter(
@@ -64,7 +72,7 @@ export function SelectionModal(props) {
               }`}
               onClick={() => setCelebTab(false)}
             >
-              Followers
+              Followers ({numSelectedFollowers})
             </a>
           </li>
           <li className="me-2">
@@ -78,7 +86,7 @@ export function SelectionModal(props) {
               aria-current="page"
               onClick={() => setCelebTab(true)}
             >
-              Celebrities
+              Celebrities ({numSelectedCelebrities})
             </a>
           </li>
         </ul>
