@@ -50,7 +50,7 @@ export function SelectionModal(props) {
           <li class="me-2">
             <a
               href="#"
-              class={`inline-block px-4 py-2 rounded-t-base active cursor-pointer ${
+              class={`inline-block px-4 py-2 rounded-t-base active cursor-pointer no-underline ${
                 celebTab
                   ? "text-neutral-400 hover:text-neutral-400"
                   : "border-b border-white text-white hover:text-white"
@@ -63,7 +63,7 @@ export function SelectionModal(props) {
           <li class="me-2">
             <a
               href="#"
-              class={`inline-block px-4 py-2 rounded-t-base active cursor-pointer ${
+              class={`inline-block px-4 py-2 rounded-t-base active cursor-pointer no-underline ${
                 celebTab
                   ? "border-b border-white text-white hover:text-white"
                   : "text-neutral-400 hover:text-neutral-400"
