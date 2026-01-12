@@ -86,10 +86,8 @@ export default function App() {
   }
 
   function updateProfiles(selections) {
-    console.log(profiles);
     setProfiles((prevProfiles) =>
       prevProfiles.map((profile, i) => {
-        console.log(profile);
         return {
           ...profile,
           enabled: true,

@@ -4,19 +4,29 @@ import { SelectionProfileCard } from "../SelectionProfileCard.jsx";
 import { validate, randomize } from "../selectionUtils.js";
 
 export function SelectionModal(props) {
+  const [celebTab, setCelebTab] = useState(false);
   const [selections, setSelections] = useState(
     props.profiles.map((profile) => profile.selected)
   );
   const [valid, setValid] = useState(true);
 
+  const numToRandomize = selections.filter(
+    (_, index) =>
+      selections[index] && (props.profiles[index].isCeleb || false) === celebTab
+  ).length;
+
   function randomizeSelections() {
-    const newSelections = randomize(selections);
+    const newSelections = randomize(selections, numToRandomize, celebTab);
     setSelections(newSelections);
     validateSelections(newSelections);
   }
 
   function clearSelections() {
-    const newSelections = selections.map((_) => false);
+    const newSelections = selections.map((_, index) => {
+      return (props.profiles[index].isCeleb || false) === celebTab
+        ? false
+        : selections[index];
+    });
     setSelections(newSelections);
     validateSelections(newSelections);
   }
@@ -39,22 +49,31 @@ export function SelectionModal(props) {
       hideModal={props.hideModal}
       size="large"
     >
+      <input
+        type="checkbox"
+        checked={celebTab}
+        onChange={(e) => setCelebTab(e.target.checked)}
+      ></input>
       {/* Scrollable Content */}
       <div className="flex-grow overflow-auto">
         <div className="sm:flex sm:items-start pr-1">
           <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {selections.map((isSelected, index) => (
-              <SelectionProfileCard
-                index={index}
-                profile={props.profiles[index]}
-                isSelected={isSelected}
-                toggleSelection={toggleSelection}
-              />
-            ))}
+            {selections
+              .map((isSelected, index) => (
+                <SelectionProfileCard
+                  index={index}
+                  profile={props.profiles[index]}
+                  isSelected={isSelected}
+                  toggleSelection={toggleSelection}
+                />
+              ))
+              .filter(
+                (_, index) =>
+                  (props.profiles[index].isCeleb || false) === celebTab
+              )}
           </div>
         </div>
       </div>
-
       {/* Footer Buttons (Sticky) */}
       <div className="bg-white dark:bg-neutral-800 rounded-b-xl pt-3 pb-1 sm:flex sm:flex-row flex-shrink-0 items-center justify-between">
         <p className={valid ? "" : "text-red-500"}>
@@ -68,7 +87,7 @@ export function SelectionModal(props) {
                     transition-all duration-200"
             onClick={randomizeSelections}
           >
-            Randomize
+            Randomize ({numToRandomize})
           </button>
           <button
             className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2

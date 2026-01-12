@@ -1,5 +1,6 @@
 import { Peer } from "peerjs";
 import { randomize } from "./selectionUtils";
+import celebs from "../data/celebs.json";
 /*
 HELPERS
 */
@@ -158,6 +159,14 @@ export async function createRoom(
           case "confirmation":
             if (data === "confirmation") {
               // receipt confirmation, start game
+              // append celebrity profiles to profiles
+              setProfiles((prevProfiles) => [
+                ...prevProfiles,
+                ...celebs.profiles.map((c) => ({
+                  ...c,
+                  isCeleb: true,
+                })),
+              ]);
               setStatus(4);
               stage = "playing";
             }
@@ -255,6 +264,13 @@ export async function joinRoom(
               const selection = data.find((d) => d.id === p.id).selected;
               return { ...p, selected: selection };
             });
+            // append celebrity profiles to profiles
+            randomProfiles.push(
+              ...celebs.profiles.map((c) => ({
+                ...c,
+                isCeleb: true,
+              }))
+            );
             setProfiles(randomProfiles);
             // send confirmation
             stage = "playing";
