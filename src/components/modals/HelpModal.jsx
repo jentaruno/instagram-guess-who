@@ -88,7 +88,7 @@ export function HelpModal({ hideModal }) {
               Kai
             </a>
             . If you have any comments, questions, or feedback, feel free to{" "}
-            <a href="mailto:kaisoapbox@gmail.com ?cc=jennifertaruno@gmail.com">
+            <a href="mailto:kaisoapbox@gmail.com?cc=jennifertaruno@gmail.com">
               write to us here!
             </a>
           </p>
